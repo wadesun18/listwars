@@ -23,6 +23,7 @@
     "@react-native/metro-config": "^0.72.11",
     "@tsconfig/react-native": "^3.0.0",
     "@types/react": "^18.0.24",
+    "@types/react-native-onboarding-swiper": "^1.1.7",
     "@types/react-test-renderer": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",

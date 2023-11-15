@@ -1,31 +1,30 @@
 import React from 'react';
+import {Image} from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 
 function LaunchScreen() {
   return (
     <Onboarding
+      onDone={() => console.log('done')}
       bottomBarHighlight={false}
       pages={[
         {
-          backgroundColor: '#a6e4d0',
+          backgroundColor: '#fff',
+          image: <Image source={require('../images/LW_Logo.jpeg')} />,
           title: 'Onboarding',
           subtitle: 'Done with React Native Onboarding Swiper',
-          bottomBarHighlight: false,
-          bottomBarColor: '#fffff',
-          bottomBarHeight: 10,
         },
         {
-          backgroundColor: '#a6e4d0',
-          title: 'Onboarding',
-          subtitle: 'Done with React Native Onboarding Swiper',
-          bottomBarHighlight: false,
-          bottomBarColor: '#fffff',
+          backgroundColor: '#fe6e58',
+          image: <Image source={require('../images/LW_Logo.jpeg')} />,
+          title: 'The Title',
+          subtitle: 'This is the subtitle that sumplements the title.',
         },
         {
-          backgroundColor: '#a6e4d0',
-          title: 'Onboarding',
-          subtitle: 'Done with React Native Onboarding Swiper',
-          bottomBarHighlight: false,
+          backgroundColor: '#999',
+          image: <Image source={require('../images/LW_Logo.jpeg')} />,
+          title: 'Triangle',
+          subtitle: "Beautiful, isn't it?",
         },
       ]}
     />
