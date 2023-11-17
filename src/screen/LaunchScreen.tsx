@@ -48,21 +48,19 @@ function LaunchScreen() {
         pages={[
           {
             backgroundColor: '#fff',
-            // image: (
-            //   <Image source={require('../images/LW_Logo1024x1024.jpg')} />
-            // ),
+            image: <Image source={require('../images/LW_Logo_example.jpg')} />,
             title: <StyledText>OnBoarding</StyledText>,
             subtitle: 'Done with React Native Onboarding Swiper',
           },
           {
             backgroundColor: '#fff',
-            // image: <Image source={require('../images/LW_Logo1024x1024.jpg')} />,
+            image: <Image source={require('../images/LW_Logo_example.jpg')} />,
             title: 'The Title',
             subtitle: 'This is the subtitle that sumplements the title.',
           },
           {
             backgroundColor: '#fff',
-            // image: <Image source={require('../images/LW_Logo1024x1024.jpg')} />,
+            image: <Image source={require('../images/LW_Logo_example.jpg')} />,
             title: 'Triangle',
             subtitle: "Beautiful, isn't it?",
           },
