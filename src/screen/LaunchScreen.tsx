@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 import styled from 'styled-components/native';
 
@@ -53,8 +53,6 @@ function LaunchScreen() {
     <SafeAreaView>
       <Onboarding
         containerStyles={{
-          borderColor: 'black',
-          borderWidth: 1,
           paddingBottom: 150,
         }}
         bottomBarHighlight={false}
