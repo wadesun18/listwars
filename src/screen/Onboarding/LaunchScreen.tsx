@@ -66,7 +66,7 @@ function LaunchScreen() {
               <Image
                 source={require('../../images/List.png')}
                 style={{
-                  transform: [{scale: 1.4}],
+                  transform: [{scale: 1.3}],
                 }}
               />
             ),
@@ -84,7 +84,7 @@ function LaunchScreen() {
               <Image
                 source={require('../../images/Add_User.png')}
                 style={{
-                  transform: [{scale: 1.2}],
+                  transform: [{scale: 0.8}],
                 }}
               />
             ),
