@@ -64,7 +64,7 @@ function LaunchScreen() {
             backgroundColor: '#fff',
             image: (
               <Image
-                source={require('../images/List.png')}
+                source={require('../../images/List.png')}
                 style={{
                   transform: [{scale: 1.4}],
                 }}
@@ -82,7 +82,7 @@ function LaunchScreen() {
             backgroundColor: '#fff',
             image: (
               <Image
-                source={require('../images/Add_User.png')}
+                source={require('../../images/Add_User.png')}
                 style={{
                   transform: [{scale: 1.2}],
                 }}
@@ -100,7 +100,7 @@ function LaunchScreen() {
             backgroundColor: '#fff',
             image: (
               <Image
-                source={require('../images/Winner_Podium.png')}
+                source={require('../../images/Winner_Podium.png')}
                 style={{
                   transform: [{scale: 1.5}],
                 }}
