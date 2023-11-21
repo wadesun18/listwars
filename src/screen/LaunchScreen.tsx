@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet} from 'react-native';
+import {Image} from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 import styled from 'styled-components/native';
 
