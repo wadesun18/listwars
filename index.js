@@ -5,6 +5,8 @@
 import {AppRegistry} from 'react-native';
 
 import {name as appName} from './app.json';
-import LaunchScreen from './src/screen/Onboarding/LaunchScreen';
+import Navigation from './src/navigation';
 
-AppRegistry.registerComponent(appName, () => LaunchScreen);
+const App = () => <Navigation />;
+
+AppRegistry.registerComponent(appName, () => App);
