@@ -1,5 +1,6 @@
 import {Text, View} from 'react-native';
 
+import ListItem from '../../component/ListItem';
 import {
   ExampleListOne,
   ExampleListThree,
@@ -8,10 +9,10 @@ import {
 
 export default function HomeScreen() {
   return (
-    <View>
-      <Text style={{marginTop: 50}}>{ExampleListOne.listName}</Text>
-      <Text>{ExampleListTwo.listName}</Text>
-      <Text>{ExampleListThree.listName}</Text>
+    <View style={{marginTop: 50}}>
+      <ListItem {...ExampleListOne} />
+      <ListItem {...ExampleListTwo} />
+      <ListItem {...ExampleListThree} />
     </View>
   );
 }
