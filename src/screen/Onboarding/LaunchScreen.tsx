@@ -1,3 +1,4 @@
+import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {Image} from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
@@ -31,6 +32,7 @@ const ButtonSecondaryText = styled.Text`
 const ButtonContainer = styled.View`
   align-items: center;
   justify-content: center;
+  background-color: white;
 `;
 
 const SubTitle = styled.Text`
@@ -48,7 +50,11 @@ const Title = styled.Text`
   margin: 5px;
 `;
 
-function LaunchScreen() {
+function LaunchScreen({navigation}: NativeStackHeaderProps) {
+  const onPress = () => {
+    navigation.push('Home');
+  };
+
   return (
     <SafeAreaView>
       <Onboarding
@@ -120,7 +126,7 @@ function LaunchScreen() {
         <Button isSecondary={false}>
           <ButtonPrimaryText>Create an account</ButtonPrimaryText>
         </Button>
-        <Button isSecondary>
+        <Button isSecondary onPress={onPress}>
           <ButtonSecondaryText>Sign In</ButtonSecondaryText>
         </Button>
       </ButtonContainer>
