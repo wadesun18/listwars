@@ -1,8 +1,28 @@
-import {Text} from 'react-native';
+import styled from 'styled-components/native';
 
-import {List} from '../../types/data';
+import {Task} from '../../types/data';
 
-export default function ListItem({item}: {item: List}) {
-  console.log('List', item);
-  return <Text>{item.listName}</Text>;
+const RowText = styled.Text`
+  color: blue;
+  font-family: Montserrat-Regular;
+  font-size: 14px;
+  margin-bottom: 2px;
+`;
+
+const RowView = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+export default function ListItem({item}: {item: Task}) {
+  const fields = ['item', 'details', 'whodunnit', 'status'];
+
+  return (
+    <RowView>
+      {fields.map((field: string) => {
+        return <RowText>{item[field as keyof Task]}</RowText>;
+      })}
+    </RowView>
+  );
 }
