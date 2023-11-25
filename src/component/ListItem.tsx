@@ -15,12 +15,11 @@ const RowView = styled.View`
   justify-content: space-between;
 `;
 
+const FIELDS = ['item', 'details', 'whodunnit', 'status'];
 export default function ListItem({item}: {item: Task}) {
-  const fields = ['item', 'details', 'whodunnit', 'status'];
-
   return (
     <RowView>
-      {fields.map((field: string) => {
+      {FIELDS.map((field: string) => {
         return <RowText>{item[field as keyof Task]}</RowText>;
       })}
     </RowView>

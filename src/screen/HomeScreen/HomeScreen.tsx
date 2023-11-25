@@ -29,14 +29,13 @@ const TopView = styled.View`
   margin-top: 100px;
 `;
 
+const HEADERS = ['Task', 'Details', 'Whodunnit?', 'Status'];
 export default function HomeScreen() {
-  const headers = ['Task', 'Details', 'Whodunnit?', 'Status'];
-
   return (
     <TopView>
       <ListName>{Data.listName}</ListName>
       <HeaderView>
-        {headers.map((header: string) => {
+        {HEADERS.map((header: string) => {
           return <HeaderText>{header}</HeaderText>;
         })}
       </HeaderView>
