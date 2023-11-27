@@ -1,49 +1,34 @@
-import {FlatList} from 'react-native';
+import {FlatList, ScrollView} from 'react-native';
 import styled from 'styled-components/native';
 
 import ListItem from '../../component/ListItem';
+import {LIST_COLOR} from '../../constants';
 import {Data} from '../../data/MockData';
 
-const HeaderText = styled.Text`
-  color: blue;
-  font-family: Montserrat-SemiBold;
-  font-size: 16px;
-  margin-bottom: 2px;
-`;
-
-const HeaderView = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
 const ListName = styled.Text`
-  color: purple;
+  color: ${LIST_COLOR};
   font-family: Montserrat-SemiBold;
   font-size: 25px;
   margin-bottom: 20px;
   text-align: center;
 `;
 
-const TopView = styled.View`
-  margin-top: 100px;
+const TopView = styled.SafeAreaView`
+  background-color: #000;
+  flex: 1;
 `;
 
-const HEADERS = ['Task', 'Details', 'Whodunnit?', 'Status'];
 export default function HomeScreen() {
   return (
     <TopView>
-      <ListName>{Data.listName}</ListName>
-      <HeaderView>
-        {HEADERS.map((header: string) => {
-          return <HeaderText>{header}</HeaderText>;
-        })}
-      </HeaderView>
-      <FlatList
-        data={Data.tasks}
-        renderItem={({item}) => <ListItem item={item} />}
-        keyExtractor={item => item.id}
-      />
+      <ScrollView>
+        <ListName>{Data.listName}</ListName>
+        <FlatList
+          data={Data.tasks}
+          renderItem={({item}) => <ListItem item={item} />}
+          keyExtractor={item => item.id}
+        />
+      </ScrollView>
     </TopView>
   );
 }

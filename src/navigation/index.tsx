@@ -33,13 +33,13 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Onboarding"
-        component={LaunchScreen}
+        name="Home"
+        component={HomeScreen}
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="Home"
-        component={HomeScreen}
+        name="Onboarding"
+        component={LaunchScreen}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
