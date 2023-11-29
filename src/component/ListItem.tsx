@@ -16,6 +16,10 @@ const ListTitle = styled.Text<{status: string}>`
     props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
 `;
 
+ListTitle.defaultProps = {
+  status: 'incomplete',
+};
+
 const ListDetails = styled.Text<{status: string}>`
   color: blue;
   font-family: Montserrat-Regular;
@@ -26,6 +30,10 @@ const ListDetails = styled.Text<{status: string}>`
   text-decoration-line: ${props =>
     props.status === 'complete' && 'line-through'};
 `;
+
+ListDetails.defaultProps = {
+  status: 'incomplete',
+};
 
 const RowView = styled.View`
   display: flex;
@@ -54,6 +62,18 @@ const DoneByText = styled.Text`
   font-weight: 400;
   color: ${LIST_COLOR};
 `;
+
+// const Wrapper = styled.View`
+//   color: ${props => props.theme.color.primary};
+// `;
+
+// Wrapper.defaultProps = {
+//   theme: {
+//     color: {
+//       primary: 'yellow',
+//     },
+//   },
+// };
 
 export default function ListItem({
   item: {title, details, status, whodunnit},

@@ -7,7 +7,7 @@ export interface Task {
   id: string;
   title: string;
   details: string;
-  whodunnit: Array<string>;
+  whodunnit: string;
   status: string;
 }
 
