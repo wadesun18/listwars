@@ -1,6 +1,8 @@
 import {faCheck} from '@fortawesome/free-solid-svg-icons/faCheck';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {useState} from 'react';
+import React from 'react';
+import {Animated, Easing, StyleSheet, Text, View} from 'react-native';
 import styled from 'styled-components/native';
 
 import {Task} from '../../types/data';
@@ -64,18 +66,6 @@ const DoneByText = styled.Text`
   color: ${LIST_COLOR};
 `;
 
-// const Wrapper = styled.View`
-//   color: ${props => props.theme.color.primary};
-// `;
-
-// Wrapper.defaultProps = {
-//   theme: {
-//     color: {
-//       primary: 'yellow',
-//     },
-//   },
-// };
-
 export default function ListItem({
   item: {id, title, details, status, whodunnit},
 }: {
@@ -89,6 +79,35 @@ export default function ListItem({
     whodunnit,
   });
 
+  const ref = React.useRef(View.prototype);
+  const animatedValue = React.useRef(new Animated.Value(0)).current;
+
+  const [textWidth, setTextWidth] = React.useState(0);
+  const [textHeight, setTextHeight] = React.useState(0);
+
+  React.useEffect(() => {
+    ref.current.measure((x, y, w, h) => {
+      setTextWidth(w);
+      setTextHeight(h);
+      animateStrike();
+    });
+  }, [animatedValue]);
+
+  const animateStrike = () => {
+    Animated.timing(animatedValue, {
+      toValue: 1,
+      duration: 2000,
+      easing: Easing.linear,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const strikeWidth = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, textWidth],
+    extrapolate: 'clamp',
+  });
+
   const clickComplete = () => {
     const tempItem = {id, title, details, status, whodunnit};
     const modifyComplete =
@@ -99,24 +118,81 @@ export default function ListItem({
   };
 
   return (
-    <RowView>
-      <TaskContainer>
-        <ListTitle status={listItem.status}>{title}</ListTitle>
-        {listItem.status === 'incomplete' && (
-          <ListDetails status={listItem.status}>{details}</ListDetails>
+    <>
+      <RowView>
+        <TaskContainer>
+          <ListTitle status={listItem.status}>{title}</ListTitle>
+          {listItem.status === 'incomplete' && (
+            <ListDetails status={listItem.status}>{details}</ListDetails>
+          )}
+        </TaskContainer>
+        {listItem.status === 'incomplete' ? (
+          <DoneButton onPress={clickComplete}>
+            <FontAwesomeIcon
+              icon={faCheck}
+              style={{color: '#fca903'}}
+              size={32}
+            />
+          </DoneButton>
+        ) : (
+          <DoneByText>{whodunnit}</DoneByText>
         )}
-      </TaskContainer>
-      {listItem.status === 'incomplete' ? (
-        <DoneButton onPress={clickComplete}>
-          <FontAwesomeIcon
-            icon={faCheck}
-            style={{color: '#fca903'}}
-            size={32}
+      </RowView>
+      <View style={styles.container}>
+        <View>
+          <Text style={styles.text} ref={ref}>
+            Some Dummy Text
+          </Text>
+          <Animated.View
+            style={[
+              styles.strike,
+              {width: strikeWidth, top: textHeight / 2 + 1},
+            ]}
           />
-        </DoneButton>
-      ) : (
-        <DoneByText>{whodunnit}</DoneByText>
-      )}
-    </RowView>
+        </View>
+      </View>
+    </>
   );
 }
+
+// Using React Animation
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: '400',
+    color: 'white',
+  },
+  strike: {
+    position: 'absolute',
+    height: 2,
+    backgroundColor: 'red',
+  },
+});
+
+// Using css
+
+// .strikethrough {
+//   display: inline-block;
+//   position: relative;
+//   transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+// }
+
+// .strikethrough:after {
+//   content: '';
+//   position: absolute;
+//   display: block;
+//   width: 100%;
+//   height: 2px;
+//   box-shadow: 0 1px rgba(255, 255, 255, 0.6);
+//   margin-top: -0.7em;
+//   background: black;
+//   transform-origin: center left;
+//   animation: strikethrough 1s 0.5s cubic-bezier(0.55, 0, 0.1, 1) 1;
+//   transition: transform 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+// }
