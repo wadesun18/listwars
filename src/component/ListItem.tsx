@@ -1,5 +1,6 @@
 import {faCheck} from '@fortawesome/free-solid-svg-icons/faCheck';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {useState} from 'react';
 import styled from 'styled-components/native';
 
 import {Task} from '../../types/data';
@@ -76,20 +77,37 @@ const DoneByText = styled.Text`
 // };
 
 export default function ListItem({
-  item: {title, details, status, whodunnit},
+  item: {id, title, details, status, whodunnit},
 }: {
   item: Task;
 }) {
+  const [listItem, setListItem] = useState({
+    id,
+    title,
+    details,
+    status,
+    whodunnit,
+  });
+
+  const clickComplete = () => {
+    const tempItem = {id, title, details, status, whodunnit};
+    const modifyComplete =
+      status === 'incomplete' ? (status = 'complete') : (status = 'incomplete');
+    tempItem.status = modifyComplete;
+    setListItem(tempItem);
+    console.log(listItem);
+  };
+
   return (
     <RowView>
       <TaskContainer>
-        <ListTitle status={status}>{title}</ListTitle>
-        {status === 'incomplete' && (
-          <ListDetails status={status}>{details}</ListDetails>
+        <ListTitle status={listItem.status}>{title}</ListTitle>
+        {listItem.status === 'incomplete' && (
+          <ListDetails status={listItem.status}>{details}</ListDetails>
         )}
       </TaskContainer>
-      {status === 'incomplete' ? (
-        <DoneButton>
+      {listItem.status === 'incomplete' ? (
+        <DoneButton onPress={clickComplete}>
           <FontAwesomeIcon
             icon={faCheck}
             style={{color: '#fca903'}}
