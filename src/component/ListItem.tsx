@@ -2,7 +2,7 @@ import {faCheck} from '@fortawesome/free-solid-svg-icons/faCheck';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {useState} from 'react';
 import React from 'react';
-import {Animated, Easing, StyleSheet, Text, View} from 'react-native';
+import {Animated, Easing, StyleSheet, View} from 'react-native';
 import styled from 'styled-components/native';
 
 import {Task} from '../../types/data';
@@ -91,12 +91,12 @@ export default function ListItem({
       setTextHeight(h);
       animateStrike();
     });
-  }, [animatedValue]);
+  }, [listItem.status]);
 
   const animateStrike = () => {
     Animated.timing(animatedValue, {
       toValue: 1,
-      duration: 2000,
+      duration: 3000,
       easing: Easing.linear,
       useNativeDriver: false,
     }).start();
@@ -121,10 +121,18 @@ export default function ListItem({
     <>
       <RowView>
         <TaskContainer>
-          <ListTitle status={listItem.status}>{title}</ListTitle>
-          {listItem.status === 'incomplete' && (
-            <ListDetails status={listItem.status}>{details}</ListDetails>
-          )}
+          <View ref={ref}>
+            <ListTitle status={listItem.status}>{title}</ListTitle>
+            <Animated.View
+              style={[
+                styles.strike,
+                {width: strikeWidth, top: textHeight / 2 + 1},
+              ]}
+            />
+            {listItem.status === 'incomplete' && (
+              <ListDetails status={listItem.status}>{details}</ListDetails>
+            )}
+          </View>
         </TaskContainer>
         {listItem.status === 'incomplete' ? (
           <DoneButton onPress={clickComplete}>
@@ -138,19 +146,6 @@ export default function ListItem({
           <DoneByText>{whodunnit}</DoneByText>
         )}
       </RowView>
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.text} ref={ref}>
-            Some Dummy Text
-          </Text>
-          <Animated.View
-            style={[
-              styles.strike,
-              {width: strikeWidth, top: textHeight / 2 + 1},
-            ]}
-          />
-        </View>
-      </View>
     </>
   );
 }
@@ -174,25 +169,3 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
 });
-
-// Using css
-
-// .strikethrough {
-//   display: inline-block;
-//   position: relative;
-//   transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
-// }
-
-// .strikethrough:after {
-//   content: '';
-//   position: absolute;
-//   display: block;
-//   width: 100%;
-//   height: 2px;
-//   box-shadow: 0 1px rgba(255, 255, 255, 0.6);
-//   margin-top: -0.7em;
-//   background: black;
-//   transform-origin: center left;
-//   animation: strikethrough 1s 0.5s cubic-bezier(0.55, 0, 0.1, 1) 1;
-//   transition: transform 0.5s cubic-bezier(0.55, 0, 0.1, 1);
-// }
