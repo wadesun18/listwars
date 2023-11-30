@@ -8,6 +8,22 @@ import styled from 'styled-components/native';
 import {Task} from '../../types/data';
 import {COMPLETE_COLOR, LIST_COLOR} from '../constants';
 
+const DoneButton = styled.TouchableOpacity`
+  background-color: #000;
+  height: 50px;
+  width: 50px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+`;
+
+const DoneByText = styled.Text`
+  font-family: Montserrat-Regular;
+  font-size: 14px;
+  font-weight: 400;
+  color: ${LIST_COLOR};
+`;
+
 const ListTitle = styled.Text<{status: string}>`
   font-family: Montserrat-Regular;
   font-size: 24px;
@@ -47,23 +63,7 @@ const RowView = styled.View`
 `;
 
 const TaskContainer = styled.View`
-  flex: 1;
-`;
-
-const DoneButton = styled.TouchableOpacity`
-  background-color: #000;
-  height: 50px;
-  width: 50px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-`;
-
-const DoneByText = styled.Text`
-  font-family: Montserrat-Regular;
-  font-size: 14px;
-  font-weight: 400;
-  color: ${LIST_COLOR};
+  justify-content: space-between;
 `;
 
 export default function ListItem({
@@ -79,24 +79,28 @@ export default function ListItem({
     whodunnit,
   });
 
-  const ref = React.useRef(View.prototype);
+  const ref = React.useRef(ListTitle.prototype);
   const animatedValue = React.useRef(new Animated.Value(0)).current;
 
   const [textWidth, setTextWidth] = React.useState(0);
   const [textHeight, setTextHeight] = React.useState(0);
 
-  React.useEffect(() => {
-    ref.current.measure((x, y, w, h) => {
-      setTextWidth(w);
-      setTextHeight(h);
-      animateStrike();
-    });
-  }, [listItem.status]);
+  // React.useEffect(() => {
+
+  // }, [listItem.status]);
+
+  // within the animation function, add logic to reset the width to zero
+  // once animation is complete so other list items can trigger same
+  // animation once user clicks complete
+  // once animation is complete, embed the strikethrough in styles of the
+  // styled component
+
+  // separately, don't
 
   const animateStrike = () => {
     Animated.timing(animatedValue, {
       toValue: 1,
-      duration: 3000,
+      duration: 5000,
       easing: Easing.linear,
       useNativeDriver: false,
     }).start();
@@ -109,20 +113,26 @@ export default function ListItem({
   });
 
   const clickComplete = () => {
-    const tempItem = {id, title, details, status, whodunnit};
-    const modifyComplete =
-      status === 'incomplete' ? (status = 'complete') : (status = 'incomplete');
-    tempItem.status = modifyComplete;
-    setListItem(tempItem);
-    console.log(listItem);
+    ref.current.measure((x, y, w, h) => {
+      setTextWidth(w);
+      setTextHeight(h);
+      animateStrike();
+    });
+    // const tempItem = {id, title, details, status, whodunnit};
+    // const modifyComplete =
+    //   status === 'incomplete' ? (status = 'complete') : (status = 'incomplete');
+    // tempItem.status = modifyComplete;
+    // setListItem(tempItem);
   };
 
   return (
     <>
       <RowView>
         <TaskContainer>
-          <View ref={ref}>
-            <ListTitle status={listItem.status}>{title}</ListTitle>
+          <View style={{borderWidth: 2, borderColor: 'white'}}>
+            <ListTitle ref={ref} status={listItem.status}>
+              {title}
+            </ListTitle>
             <Animated.View
               style={[
                 styles.strike,
@@ -143,7 +153,9 @@ export default function ListItem({
             />
           </DoneButton>
         ) : (
-          <DoneByText>{whodunnit}</DoneByText>
+          <DoneByText style={{borderWidth: 2, borderColor: 'white'}}>
+            {whodunnit}
+          </DoneByText>
         )}
       </RowView>
     </>
@@ -165,7 +177,7 @@ const styles = StyleSheet.create({
   },
   strike: {
     position: 'absolute',
-    height: 2,
+    height: 3,
     backgroundColor: 'red',
   },
 });
