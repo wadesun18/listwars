@@ -1,51 +1,12 @@
 import {faCheck} from '@fortawesome/free-solid-svg-icons/faCheck';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {useState} from 'react';
+import React from 'react';
+import {Animated, Easing, StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
 
 import {Task} from '../../types/data';
 import {COMPLETE_COLOR, LIST_COLOR} from '../constants';
-
-const ListTitle = styled.Text<{status: string}>`
-  font-family: Montserrat-Regular;
-  font-size: 24px;
-  font-weight: 800;
-  margin-bottom: 2px;
-  text-decoration-line: ${props =>
-    props.status === 'complete' && 'line-through'};
-  color: ${props =>
-    props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
-`;
-
-ListTitle.defaultProps = {
-  status: 'incomplete',
-};
-
-const ListDetails = styled.Text<{status: string}>`
-  color: blue;
-  font-family: Montserrat-Regular;
-  font-size: 14px;
-  font-weight: 400;
-  margin-bottom: 2px;
-  color: #fff;
-  text-decoration-line: ${props =>
-    props.status === 'complete' && 'line-through'};
-`;
-
-ListDetails.defaultProps = {
-  status: 'incomplete',
-};
-
-const RowView = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  height: 80px;
-`;
-
-const TaskContainer = styled.View`
-  flex: 1;
-`;
 
 const DoneButton = styled.TouchableOpacity`
   background-color: #000;
@@ -63,42 +24,189 @@ const DoneByText = styled.Text`
   color: ${LIST_COLOR};
 `;
 
-// const Wrapper = styled.View`
-//   color: ${props => props.theme.color.primary};
+const ListTitle = styled.Text<{status: string}>`
+  font-family: Montserrat-Regular;
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 2px;
+  color: ${props =>
+    props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
+`;
+
+// const ListTitleComplete = styled.Text<{status: string}>`
+//   font-family: Montserrat-Regular;
+//   font-size: 24px;
+//   font-weight: 800;
+//   margin-bottom: 2px;
+//   text-decoration: line-through;
+//   color: ${props =>
+//     props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
 // `;
 
-// Wrapper.defaultProps = {
-//   theme: {
-//     color: {
-//       primary: 'yellow',
-//     },
-//   },
-// };
+ListTitle.defaultProps = {
+  status: 'incomplete',
+};
+
+const ListDetails = styled.Text<{status: string}>`
+  color: blue;
+  font-family: Montserrat-Regular;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 2px;
+  color: #fff;
+`;
+
+ListDetails.defaultProps = {
+  status: 'incomplete',
+};
+
+const RowView = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+`;
+
+const TaskContainer = styled.View`
+  justify-content: space-between;
+`;
+
+const LeftContainer = styled.View`
+  justify-content: center;
+  width: 50;
+  height: 50;
+`;
 
 export default function ListItem({
-  item: {title, details, status, whodunnit},
+  item: {id, title, details, status, whodunnit},
 }: {
   item: Task;
 }) {
+  const [listItem, setListItem] = useState({
+    id,
+    title,
+    details,
+    status,
+    whodunnit,
+  });
+
+  const titleRef = React.useRef(ListTitle.prototype);
+  const detailsRef = React.useRef(ListDetails.prototype);
+  const animatedValue = React.useRef(new Animated.Value(0)).current;
+
+  const [titleTextWidth, setTitleTextWidth] = React.useState(0);
+  const [titleTextHeight, setTitleTextHeight] = React.useState(0);
+  const [detailsTextWidth, setDetailsTextWidth] = React.useState(0);
+  const [detailsTextHeight, setDetailsTextHeight] = React.useState(0);
+
+  const animateStrike = () => {
+    Animated.timing(animatedValue, {
+      toValue: 1,
+      duration: 1000,
+      easing: Easing.linear,
+      useNativeDriver: false,
+    }).start(() => {
+      const tempItem = {id, title, details, status, whodunnit};
+      const modifyComplete =
+        status === 'incomplete'
+          ? (status = 'complete')
+          : (status = 'incomplete');
+      tempItem.status = modifyComplete;
+      setListItem(tempItem);
+    });
+  };
+
+  const animateStrikeDetail = () => {
+    Animated.timing(animatedValue, {
+      toValue: 1,
+      duration: 1000,
+      easing: Easing.linear,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const titleStrikeWidth = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, titleTextWidth],
+    extrapolate: 'clamp',
+  });
+
+  const detailsStrikeWidth = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, detailsTextWidth],
+    extrapolate: 'clamp',
+  });
+
+  const clickComplete = () => {
+    titleRef.current.measure((x, y, w, h) => {
+      setTitleTextWidth(w);
+      setTitleTextHeight(h);
+      animateStrike();
+    });
+    detailsRef.current.measure((x, y, w, h) => {
+      setDetailsTextWidth(w);
+      setDetailsTextHeight(h);
+      animateStrikeDetail();
+    });
+  };
+
+  const {status: itemStatus} = listItem;
   return (
-    <RowView>
-      <TaskContainer>
-        <ListTitle status={status}>{title}</ListTitle>
-        {status === 'incomplete' && (
-          <ListDetails status={status}>{details}</ListDetails>
-        )}
-      </TaskContainer>
-      {status === 'incomplete' ? (
-        <DoneButton>
-          <FontAwesomeIcon
-            icon={faCheck}
-            style={{color: '#fca903'}}
-            size={32}
+    <>
+      <RowView>
+        <TaskContainer>
+          {/* {itemStatus === 'complete' ? (
+            <ListTitleComplete ref={titleRef} status={itemStatus}>
+              {title}
+            </ListTitleComplete>
+          ) : (
+            <> */}
+          <ListTitle ref={titleRef} status={itemStatus}>
+            {title}
+          </ListTitle>
+          <Animated.View
+            style={[
+              styles.strike,
+              {width: titleStrikeWidth, top: titleTextHeight / 2 + 1},
+            ]}
           />
-        </DoneButton>
-      ) : (
-        <DoneByText>{whodunnit}</DoneByText>
-      )}
-    </RowView>
+          {/* </>
+          )} */}
+        </TaskContainer>
+        <LeftContainer>
+          {itemStatus === 'incomplete' ? (
+            <DoneButton onPress={clickComplete}>
+              <FontAwesomeIcon
+                icon={faCheck}
+                style={{color: '#fca903'}}
+                size={32}
+              />
+            </DoneButton>
+          ) : (
+            <DoneByText>{whodunnit}</DoneByText>
+          )}
+        </LeftContainer>
+      </RowView>
+      <RowView>
+        <ListDetails ref={detailsRef} status={listItem.status}>
+          {details}
+        </ListDetails>
+        <Animated.View
+          style={[
+            styles.strike,
+            {width: detailsStrikeWidth, top: detailsTextHeight / 2 + 1},
+          ]}
+        />
+      </RowView>
+    </>
   );
 }
+
+const styles = StyleSheet.create({
+  strike: {
+    position: 'absolute',
+    height: 3,
+    backgroundColor: COMPLETE_COLOR,
+  },
+});

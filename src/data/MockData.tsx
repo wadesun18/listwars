@@ -6,7 +6,7 @@ export const Data = {
       title: 'Clean floors',
       details: 'Vacuum then wash floors',
       whodunnit: 'Maria',
-      status: 'complete',
+      status: 'incomplete',
     },
     {
       id: '2',
@@ -20,7 +20,7 @@ export const Data = {
       title: 'Take out garbage',
       details: 'Get garbage bags',
       whodunnit: 'Rufus',
-      status: 'complete',
+      status: 'incomplete',
     },
     {
       id: '4',
