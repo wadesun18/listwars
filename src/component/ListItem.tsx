@@ -2,7 +2,7 @@ import {faCheck} from '@fortawesome/free-solid-svg-icons/faCheck';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {useState} from 'react';
 import React from 'react';
-import {Animated, Easing, StyleSheet, View} from 'react-native';
+import {Animated, Easing, StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
 
 import {Task} from '../../types/data';
@@ -160,9 +160,7 @@ export default function ListItem({
             />
           </DoneButton>
         ) : (
-          <View>
-            <DoneByText>{whodunnit}</DoneByText>
-          </View>
+          <DoneByText>{whodunnit}</DoneByText>
         )}
       </RowView>
       <RowView>
@@ -180,19 +178,7 @@ export default function ListItem({
   );
 }
 
-// Using React Animation
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: '400',
-    color: 'white',
-  },
   strike: {
     position: 'absolute',
     height: 3,
