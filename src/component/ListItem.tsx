@@ -20,6 +20,8 @@ const DoneButton = styled.TouchableOpacity`
 const DoneByText = styled.Text`
   font-family: Montserrat-Regular;
   font-size: 14px;
+  height: 50px;
+  width: 50px;
   font-weight: 400;
   color: ${LIST_COLOR};
 `;
@@ -29,8 +31,6 @@ const ListTitle = styled.Text<{status: string}>`
   font-size: 24px;
   font-weight: 800;
   margin-bottom: 2px;
-  text-decoration-line: ${props =>
-    props.status === 'complete' && 'line-through'};
   color: ${props =>
     props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
 `;
@@ -46,8 +46,6 @@ const ListDetails = styled.Text<{status: string}>`
   font-weight: 400;
   margin-bottom: 2px;
   color: #fff;
-  text-decoration-line: ${props =>
-    props.status === 'complete' && 'line-through'};
 `;
 
 ListDetails.defaultProps = {
@@ -88,11 +86,6 @@ export default function ListItem({
   const [detailsTextWidth, setDetailsTextWidth] = React.useState(0);
   const [detailsTextHeight, setDetailsTextHeight] = React.useState(0);
 
-  // once animation is complete, embed the strikethrough in styles of the
-  // styled component
-
-  // separately, don't
-
   const animateStrike = () => {
     Animated.timing(animatedValue, {
       toValue: 1,
@@ -108,6 +101,15 @@ export default function ListItem({
       tempItem.status = modifyComplete;
       setListItem(tempItem);
     });
+  };
+
+  const animateStrikeDetail = () => {
+    Animated.timing(animatedValue, {
+      toValue: 1,
+      duration: 1000,
+      easing: Easing.linear,
+      useNativeDriver: false,
+    }).start();
   };
 
   const titleStrikeWidth = animatedValue.interpolate({
@@ -131,7 +133,7 @@ export default function ListItem({
     detailsRef.current.measure((x, y, w, h) => {
       setDetailsTextWidth(w);
       setDetailsTextHeight(h);
-      animateStrike();
+      animateStrikeDetail();
     });
   };
 
@@ -158,20 +160,13 @@ export default function ListItem({
             />
           </DoneButton>
         ) : (
-          <DoneByText style={{borderWidth: 2, borderColor: 'white'}}>
-            {whodunnit}
-          </DoneByText>
+          <View>
+            <DoneByText>{whodunnit}</DoneByText>
+          </View>
         )}
       </RowView>
-      <View>
-        <ListDetails
-          style={{
-            justifyContent: 'space-between',
-            borderWidth: 2,
-            borderColor: 'white',
-          }}
-          ref={detailsRef}
-          status={listItem.status}>
+      <RowView>
+        <ListDetails ref={detailsRef} status={listItem.status}>
           {details}
         </ListDetails>
         <Animated.View
@@ -180,7 +175,7 @@ export default function ListItem({
             {width: detailsStrikeWidth, top: detailsTextHeight / 2 + 1},
           ]}
         />
-      </View>
+      </RowView>
     </>
   );
 }
@@ -201,6 +196,6 @@ const styles = StyleSheet.create({
   strike: {
     position: 'absolute',
     height: 3,
-    backgroundColor: 'red',
+    backgroundColor: COMPLETE_COLOR,
   },
 });
