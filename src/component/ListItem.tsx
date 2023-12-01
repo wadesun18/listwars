@@ -20,8 +20,6 @@ const DoneButton = styled.TouchableOpacity`
 const DoneByText = styled.Text`
   font-family: Montserrat-Regular;
   font-size: 14px;
-  height: 50px;
-  width: 50px;
   font-weight: 400;
   color: ${LIST_COLOR};
 `;
@@ -34,6 +32,16 @@ const ListTitle = styled.Text<{status: string}>`
   color: ${props =>
     props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
 `;
+
+// const ListTitleComplete = styled.Text<{status: string}>`
+//   font-family: Montserrat-Regular;
+//   font-size: 24px;
+//   font-weight: 800;
+//   margin-bottom: 2px;
+//   text-decoration: line-through;
+//   color: ${props =>
+//     props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
+// `;
 
 ListTitle.defaultProps = {
   status: 'incomplete',
@@ -62,6 +70,12 @@ const RowView = styled.View`
 
 const TaskContainer = styled.View`
   justify-content: space-between;
+`;
+
+const LeftContainer = styled.View`
+  justify-content: center;
+  width: 50;
+  height: 50;
 `;
 
 export default function ListItem({
@@ -137,11 +151,18 @@ export default function ListItem({
     });
   };
 
+  const {status: itemStatus} = listItem;
   return (
     <>
       <RowView>
         <TaskContainer>
-          <ListTitle ref={titleRef} status={listItem.status}>
+          {/* {itemStatus === 'complete' ? (
+            <ListTitleComplete ref={titleRef} status={itemStatus}>
+              {title}
+            </ListTitleComplete>
+          ) : (
+            <> */}
+          <ListTitle ref={titleRef} status={itemStatus}>
             {title}
           </ListTitle>
           <Animated.View
@@ -150,18 +171,22 @@ export default function ListItem({
               {width: titleStrikeWidth, top: titleTextHeight / 2 + 1},
             ]}
           />
+          {/* </>
+          )} */}
         </TaskContainer>
-        {listItem.status === 'incomplete' ? (
-          <DoneButton onPress={clickComplete}>
-            <FontAwesomeIcon
-              icon={faCheck}
-              style={{color: '#fca903'}}
-              size={32}
-            />
-          </DoneButton>
-        ) : (
-          <DoneByText>{whodunnit}</DoneByText>
-        )}
+        <LeftContainer>
+          {itemStatus === 'incomplete' ? (
+            <DoneButton onPress={clickComplete}>
+              <FontAwesomeIcon
+                icon={faCheck}
+                style={{color: '#fca903'}}
+                size={32}
+              />
+            </DoneButton>
+          ) : (
+            <DoneByText>{whodunnit}</DoneByText>
+          )}
+        </LeftContainer>
       </RowView>
       <RowView>
         <ListDetails ref={detailsRef} status={listItem.status}>
