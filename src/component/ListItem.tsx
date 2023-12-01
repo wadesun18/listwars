@@ -59,7 +59,7 @@ const RowView = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: 80px;
+  margin-top: 20px;
 `;
 
 const TaskContainer = styled.View`
@@ -79,19 +79,15 @@ export default function ListItem({
     whodunnit,
   });
 
-  const ref = React.useRef(ListTitle.prototype);
+  const titleRef = React.useRef(ListTitle.prototype);
+  const detailsRef = React.useRef(ListDetails.prototype);
   const animatedValue = React.useRef(new Animated.Value(0)).current;
 
-  const [textWidth, setTextWidth] = React.useState(0);
-  const [textHeight, setTextHeight] = React.useState(0);
+  const [titleTextWidth, setTitleTextWidth] = React.useState(0);
+  const [titleTextHeight, setTitleTextHeight] = React.useState(0);
+  const [detailsTextWidth, setDetailsTextWidth] = React.useState(0);
+  const [detailsTextHeight, setDetailsTextHeight] = React.useState(0);
 
-  // React.useEffect(() => {
-
-  // }, [listItem.status]);
-
-  // within the animation function, add logic to reset the width to zero
-  // once animation is complete so other list items can trigger same
-  // animation once user clicks complete
   // once animation is complete, embed the strikethrough in styles of the
   // styled component
 
@@ -100,49 +96,58 @@ export default function ListItem({
   const animateStrike = () => {
     Animated.timing(animatedValue, {
       toValue: 1,
-      duration: 5000,
+      duration: 1000,
       easing: Easing.linear,
       useNativeDriver: false,
-    }).start();
+    }).start(() => {
+      const tempItem = {id, title, details, status, whodunnit};
+      const modifyComplete =
+        status === 'incomplete'
+          ? (status = 'complete')
+          : (status = 'incomplete');
+      tempItem.status = modifyComplete;
+      setListItem(tempItem);
+    });
   };
 
-  const strikeWidth = animatedValue.interpolate({
+  const titleStrikeWidth = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, textWidth],
+    outputRange: [0, titleTextWidth],
+    extrapolate: 'clamp',
+  });
+
+  const detailsStrikeWidth = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, detailsTextWidth],
     extrapolate: 'clamp',
   });
 
   const clickComplete = () => {
-    ref.current.measure((x, y, w, h) => {
-      setTextWidth(w);
-      setTextHeight(h);
+    titleRef.current.measure((x, y, w, h) => {
+      setTitleTextWidth(w);
+      setTitleTextHeight(h);
       animateStrike();
     });
-    // const tempItem = {id, title, details, status, whodunnit};
-    // const modifyComplete =
-    //   status === 'incomplete' ? (status = 'complete') : (status = 'incomplete');
-    // tempItem.status = modifyComplete;
-    // setListItem(tempItem);
+    detailsRef.current.measure((x, y, w, h) => {
+      setDetailsTextWidth(w);
+      setDetailsTextHeight(h);
+      animateStrike();
+    });
   };
 
   return (
     <>
       <RowView>
         <TaskContainer>
-          <View style={{borderWidth: 2, borderColor: 'white'}}>
-            <ListTitle ref={ref} status={listItem.status}>
-              {title}
-            </ListTitle>
-            <Animated.View
-              style={[
-                styles.strike,
-                {width: strikeWidth, top: textHeight / 2 + 1},
-              ]}
-            />
-            {listItem.status === 'incomplete' && (
-              <ListDetails status={listItem.status}>{details}</ListDetails>
-            )}
-          </View>
+          <ListTitle ref={titleRef} status={listItem.status}>
+            {title}
+          </ListTitle>
+          <Animated.View
+            style={[
+              styles.strike,
+              {width: titleStrikeWidth, top: titleTextHeight / 2 + 1},
+            ]}
+          />
         </TaskContainer>
         {listItem.status === 'incomplete' ? (
           <DoneButton onPress={clickComplete}>
@@ -158,6 +163,24 @@ export default function ListItem({
           </DoneByText>
         )}
       </RowView>
+      <View>
+        <ListDetails
+          style={{
+            justifyContent: 'space-between',
+            borderWidth: 2,
+            borderColor: 'white',
+          }}
+          ref={detailsRef}
+          status={listItem.status}>
+          {details}
+        </ListDetails>
+        <Animated.View
+          style={[
+            styles.strike,
+            {width: detailsStrikeWidth, top: detailsTextHeight / 2 + 1},
+          ]}
+        />
+      </View>
     </>
   );
 }
