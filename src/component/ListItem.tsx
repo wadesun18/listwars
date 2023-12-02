@@ -2,7 +2,7 @@ import {faCheck} from '@fortawesome/free-solid-svg-icons/faCheck';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {useState} from 'react';
 import React from 'react';
-import {Animated, Easing, StyleSheet} from 'react-native';
+import {Animated, Easing, StyleSheet, Vibration} from 'react-native';
 import styled from 'styled-components/native';
 
 import {Task} from '../../types/data';
@@ -100,8 +100,8 @@ export default function ListItem({
   const [detailsTextWidth, setDetailsTextWidth] = React.useState(0);
   const [detailsTextHeight, setDetailsTextHeight] = React.useState(0);
 
-  const animateStrike = () => {
-    Animated.timing(animatedValue, {
+  const animateStrike = async () => {
+    await Animated.timing(animatedValue, {
       toValue: 1,
       duration: 1000,
       easing: Easing.linear,
@@ -114,6 +114,7 @@ export default function ListItem({
           : (status = 'incomplete');
       tempItem.status = modifyComplete;
       setListItem(tempItem);
+      Vibration.vibrate();
     });
   };
 
