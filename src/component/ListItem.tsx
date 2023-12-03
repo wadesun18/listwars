@@ -3,6 +3,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {useState} from 'react';
 import React from 'react';
 import {Animated, Easing, StyleSheet, Vibration} from 'react-native';
+import Sound from 'react-native-sound';
 import styled from 'styled-components/native';
 
 import {Task} from '../../types/data';
@@ -78,6 +79,8 @@ const LeftContainer = styled.View`
   height: 50;
 `;
 
+Sound.setCategory('Playback');
+
 export default function ListItem({
   item: {id, title, details, status, whodunnit},
 }: {
@@ -94,6 +97,22 @@ export default function ListItem({
   const titleRef = React.useRef(ListTitle.prototype);
   const detailsRef = React.useRef(ListDetails.prototype);
   const animatedValue = React.useRef(new Animated.Value(0)).current;
+
+  const whoosh = new Sound('whoosh.mp3', Sound.MAIN_BUNDLE, error => {
+    if (error) {
+      console.log('failed to load the sound', error);
+      return;
+    }
+    // when loaded successfully
+    console.log(
+      'duration in seconds: ' +
+        whoosh.getDuration() +
+        'number of channels: ' +
+        whoosh.getNumberOfChannels(),
+    );
+  });
+
+  whoosh.setVolume(1);
 
   const [titleTextWidth, setTitleTextWidth] = React.useState(0);
   const [titleTextHeight, setTitleTextHeight] = React.useState(0);
