@@ -114,6 +114,16 @@ export default function ListItem({
 
   whoosh.setVolume(1);
 
+  const playPause = () => {
+    whoosh.play(success => {
+      if (success) {
+        console.log('successfully finished playing');
+      } else {
+        console.log('playback failed due to audio decoding errors');
+      }
+    });
+  };
+
   const [titleTextWidth, setTitleTextWidth] = React.useState(0);
   const [titleTextHeight, setTitleTextHeight] = React.useState(0);
   const [detailsTextWidth, setDetailsTextWidth] = React.useState(0);
@@ -159,6 +169,7 @@ export default function ListItem({
   });
 
   const clickComplete = () => {
+    playPause();
     titleRef.current.measure((x, y, w, h) => {
       setTitleTextWidth(w);
       setTitleTextHeight(h);
