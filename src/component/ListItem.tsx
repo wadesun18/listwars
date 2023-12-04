@@ -98,7 +98,7 @@ export default function ListItem({
   const detailsRef = React.useRef(ListDetails.prototype);
   const animatedValue = React.useRef(new Animated.Value(0)).current;
 
-  const whoosh = new Sound('whoosh.mp3', Sound.MAIN_BUNDLE, error => {
+  const pencil = new Sound('pencil.mp3', Sound.MAIN_BUNDLE, error => {
     if (error) {
       console.log('failed to load the sound', error);
       return;
@@ -106,16 +106,16 @@ export default function ListItem({
     // when loaded successfully
     console.log(
       'duration in seconds: ' +
-        whoosh.getDuration() +
+        pencil.getDuration() +
         'number of channels: ' +
-        whoosh.getNumberOfChannels(),
+        pencil.getNumberOfChannels(),
     );
   });
 
-  whoosh.setVolume(1);
+  pencil.setVolume(1);
 
   const playPause = () => {
-    whoosh.play(success => {
+    pencil.play(success => {
       if (success) {
         console.log('successfully finished playing');
       } else {

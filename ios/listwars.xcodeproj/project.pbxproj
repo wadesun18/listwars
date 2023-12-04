@@ -19,6 +19,7 @@
 		791CB9A70C2243D6BBB86808 /* Montserrat-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7AA383FBE4142EE951B6172 /* Montserrat-SemiBoldItalic.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		B07BD3092B1ADCD00036FAE2 /* whoosh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B07BD3082B1ADCD00036FAE2 /* whoosh.mp3 */; };
+		B07BD30B2B1E77B20036FAE2 /* pencil.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B07BD30A2B1E77B20036FAE2 /* pencil.mp3 */; };
 		B0C408882B05852900018014 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0C408872B05852900018014 /* Assets.xcassets */; };
 		BE0FC0D6BAC04364A4AB6F63 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C04D54E1EC6C41E88D65060C /* Montserrat-Regular.ttf */; };
 		D86DD0B91E0E4E8480CCBA7E /* Montserrat-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0BFF99F6847398AD7EBE8 /* Montserrat-Italic.ttf */; };
@@ -53,6 +54,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = listwars/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-listwars-listwarsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-listwars-listwarsTests.release.xcconfig"; path = "Target Support Files/Pods-listwars-listwarsTests/Pods-listwars-listwarsTests.release.xcconfig"; sourceTree = "<group>"; };
 		B07BD3082B1ADCD00036FAE2 /* whoosh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = whoosh.mp3; sourceTree = "<group>"; };
+		B07BD30A2B1E77B20036FAE2 /* pencil.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pencil.mp3; sourceTree = "<group>"; };
 		B0C408872B05852900018014 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B7AA383FBE4142EE951B6172 /* Montserrat-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBoldItalic.ttf"; path = "../assets/fonts/Montserrat-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		BE719D5BCA994954A9B22FB6 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				B07BD30A2B1E77B20036FAE2 /* pencil.mp3 */,
 				B07BD3082B1ADCD00036FAE2 /* whoosh.mp3 */,
 				13B07FAE1A68108700A75B9A /* listwars */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -276,6 +279,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				B0C408882B05852900018014 /* Assets.xcassets in Resources */,
+				B07BD30B2B1E77B20036FAE2 /* pencil.mp3 in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				0132A78B1165482FA29366C2 /* Montserrat-Bold.ttf in Resources */,
 				B07BD3092B1ADCD00036FAE2 /* whoosh.mp3 in Resources */,
