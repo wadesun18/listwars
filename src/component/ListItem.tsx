@@ -150,7 +150,7 @@ export default function ListItem({
   const animateStrikeDetail = () => {
     Animated.timing(animatedValue, {
       toValue: 1,
-      duration: 1000,
+      duration: 300,
       easing: Easing.linear,
       useNativeDriver: false,
     }).start();
