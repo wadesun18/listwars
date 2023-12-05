@@ -3,9 +3,9 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {useState} from 'react';
 import React from 'react';
 import {Animated, Easing, StyleSheet, Vibration} from 'react-native';
-import Sound from 'react-native-sound';
 import styled from 'styled-components/native';
 
+import {pencil, playPause} from './Sound';
 import {Task} from '../../types/data';
 import {COMPLETE_COLOR, LIST_COLOR} from '../constants';
 
@@ -79,7 +79,7 @@ const LeftContainer = styled.View`
   height: 50;
 `;
 
-Sound.setCategory('Playback');
+// Sound.setCategory('Playback');
 
 export default function ListItem({
   item: {id, title, details, status, whodunnit},
@@ -98,36 +98,12 @@ export default function ListItem({
   const detailsRef = React.useRef(ListDetails.prototype);
   const animatedValue = React.useRef(new Animated.Value(0)).current;
 
-  const pencil = new Sound('pencil.mp3', Sound.MAIN_BUNDLE, error => {
-    if (error) {
-      console.log('failed to load the sound', error);
-      return;
-    }
-    // when loaded successfully
-    console.log(
-      'duration in seconds: ' +
-        pencil.getDuration() +
-        'number of channels: ' +
-        pencil.getNumberOfChannels(),
-    );
-  });
-
-  pencil.setVolume(1);
-
-  const playPause = () => {
-    pencil.play(success => {
-      if (success) {
-        console.log('successfully finished playing');
-      } else {
-        console.log('playback failed due to audio decoding errors');
-      }
-    });
-  };
-
   const [titleTextWidth, setTitleTextWidth] = React.useState(0);
   const [titleTextHeight, setTitleTextHeight] = React.useState(0);
   const [detailsTextWidth, setDetailsTextWidth] = React.useState(0);
   const [detailsTextHeight, setDetailsTextHeight] = React.useState(0);
+
+  pencil.setVolume(1);
 
   const animateStrike = async () => {
     await Animated.timing(animatedValue, {
