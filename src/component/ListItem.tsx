@@ -2,9 +2,10 @@ import {faCheck} from '@fortawesome/free-solid-svg-icons/faCheck';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {useState} from 'react';
 import React from 'react';
-import {Animated, Easing, StyleSheet} from 'react-native';
+import {Animated, Easing, StyleSheet, Vibration} from 'react-native';
 import styled from 'styled-components/native';
 
+import {pencil, playPause} from './Sound';
 import {Task} from '../../types/data';
 import {COMPLETE_COLOR, LIST_COLOR} from '../constants';
 
@@ -78,6 +79,8 @@ const LeftContainer = styled.View`
   height: 50;
 `;
 
+// Sound.setCategory('Playback');
+
 export default function ListItem({
   item: {id, title, details, status, whodunnit},
 }: {
@@ -100,8 +103,10 @@ export default function ListItem({
   const [detailsTextWidth, setDetailsTextWidth] = React.useState(0);
   const [detailsTextHeight, setDetailsTextHeight] = React.useState(0);
 
-  const animateStrike = () => {
-    Animated.timing(animatedValue, {
+  pencil.setVolume(1);
+
+  const animateStrike = async () => {
+    await Animated.timing(animatedValue, {
       toValue: 1,
       duration: 1000,
       easing: Easing.linear,
@@ -114,13 +119,14 @@ export default function ListItem({
           : (status = 'incomplete');
       tempItem.status = modifyComplete;
       setListItem(tempItem);
+      Vibration.vibrate();
     });
   };
 
   const animateStrikeDetail = () => {
     Animated.timing(animatedValue, {
       toValue: 1,
-      duration: 1000,
+      duration: 300,
       easing: Easing.linear,
       useNativeDriver: false,
     }).start();
@@ -139,6 +145,7 @@ export default function ListItem({
   });
 
   const clickComplete = () => {
+    playPause();
     titleRef.current.measure((x, y, w, h) => {
       setTitleTextWidth(w);
       setTitleTextHeight(h);
