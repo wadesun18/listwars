@@ -34,15 +34,17 @@ const ListTitle = styled.Text<{status: string}>`
     props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
 `;
 
-// const ListTitleComplete = styled.Text<{status: string}>`
-//   font-family: Montserrat-Regular;
-//   font-size: 24px;
-//   font-weight: 800;
-//   margin-bottom: 2px;
-//   text-decoration: line-through;
-//   color: ${props =>
-//     props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
-// `;
+const ListTitleComplete = styled.Text<{status: string}>`
+  font-family: Montserrat-Regular;
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 2px;
+  text-decoration: line-through;
+  text-decoration-color: ${props =>
+    props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
+  color: ${props =>
+    props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
+`;
 
 ListTitle.defaultProps = {
   status: 'incomplete',
@@ -55,6 +57,20 @@ const ListDetails = styled.Text<{status: string}>`
   font-weight: 400;
   margin-bottom: 2px;
   color: #fff;
+`;
+
+const ListDetailsComplete = styled.Text<{status: string}>`
+  color: blue;
+  font-family: Montserrat-Regular;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 2px;
+  color: #fff;
+  text-decoration: line-through;
+  text-decoration-color: ${props =>
+    props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
+  color: ${props =>
+    props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
 `;
 
 ListDetails.defaultProps = {
@@ -78,8 +94,6 @@ const LeftContainer = styled.View`
   width: 50;
   height: 50;
 `;
-
-// Sound.setCategory('Playback');
 
 export default function ListItem({
   item: {id, title, details, status, whodunnit},
@@ -112,15 +126,14 @@ export default function ListItem({
       easing: Easing.linear,
       useNativeDriver: false,
     }).start(() => {
-      const tempItem = {id, title, details, status, whodunnit};
-      const modifyComplete =
-        status === 'incomplete'
-          ? (status = 'complete')
-          : (status = 'incomplete');
-      tempItem.status = modifyComplete;
-      setListItem(tempItem);
       Vibration.vibrate();
     });
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    const tempItem = {id, title, details, status, whodunnit};
+    const modifyComplete =
+      status === 'incomplete' ? (status = 'complete') : (status = 'incomplete');
+    tempItem.status = modifyComplete;
+    setListItem(tempItem);
   };
 
   const animateStrikeDetail = () => {
@@ -163,23 +176,23 @@ export default function ListItem({
     <>
       <RowView>
         <TaskContainer>
-          {/* {itemStatus === 'complete' ? (
+          {itemStatus === 'complete' ? (
             <ListTitleComplete ref={titleRef} status={itemStatus}>
               {title}
             </ListTitleComplete>
           ) : (
-            <> */}
-          <ListTitle ref={titleRef} status={itemStatus}>
-            {title}
-          </ListTitle>
-          <Animated.View
-            style={[
-              styles.strike,
-              {width: titleStrikeWidth, top: titleTextHeight / 2 + 1},
-            ]}
-          />
-          {/* </>
-          )} */}
+            <>
+              <ListTitle ref={titleRef} status={itemStatus}>
+                {title}
+              </ListTitle>
+              <Animated.View
+                style={[
+                  styles.titleStrike,
+                  {width: titleStrikeWidth, top: titleTextHeight / 2 + 1},
+                ]}
+              />
+            </>
+          )}
         </TaskContainer>
         <LeftContainer>
           {itemStatus === 'incomplete' ? (
@@ -196,24 +209,37 @@ export default function ListItem({
         </LeftContainer>
       </RowView>
       <RowView>
-        <ListDetails ref={detailsRef} status={listItem.status}>
-          {details}
-        </ListDetails>
-        <Animated.View
-          style={[
-            styles.strike,
-            {width: detailsStrikeWidth, top: detailsTextHeight / 2 + 1},
-          ]}
-        />
+        {itemStatus === 'complete' ? (
+          <ListDetailsComplete ref={detailsRef} status={itemStatus}>
+            {details}
+          </ListDetailsComplete>
+        ) : (
+          <>
+            <ListDetails ref={detailsRef} status={listItem.status}>
+              {details}
+            </ListDetails>
+            <Animated.View
+              style={[
+                styles.detailsStrike,
+                {width: detailsStrikeWidth, top: detailsTextHeight / 2 + 1},
+              ]}
+            />
+          </>
+        )}
       </RowView>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  strike: {
+  titleStrike: {
     position: 'absolute',
-    height: 3,
-    backgroundColor: COMPLETE_COLOR,
+    height: 1,
+    backgroundColor: LIST_COLOR,
+  },
+  detailsStrike: {
+    position: 'absolute',
+    height: 1,
+    backgroundColor: '#fff',
   },
 });
