@@ -1,11 +1,10 @@
-import {useEffect} from 'react';
-import {Alert, FlatList, ScrollView} from 'react-native';
+import React, {useEffect} from 'react';
+import {FlatList, ScrollView, Text} from 'react-native';
 import styled from 'styled-components/native';
 
 import ListItem from '../../component/ListItem';
 import {LIST_COLOR} from '../../constants';
 import {useListContext} from '../../context/ListContext';
-import {Data} from '../../data/MockData';
 
 const ListName = styled.Text`
   color: ${LIST_COLOR};
@@ -21,10 +20,15 @@ const TopView = styled.SafeAreaView`
 `;
 
 export default function HomeScreen({navigation}: any) {
-  const {listItems, getListItems, setListItems} = useListContext();
+  const {listItems, getListItems, checkListCleared, listCleared} =
+    useListContext();
+
+  // introduce a function to check whether all list items are cleared
 
   useEffect(() => {
     getListItems();
+    checkListCleared(listItems);
+    console.log('hmmmm', listItems, listCleared);
     // add listener to detect if user has navigated to IndexScreen
     const listener = navigation.addListener('focus', () => {
       getListItems();
@@ -34,18 +38,27 @@ export default function HomeScreen({navigation}: any) {
         listener.remove();
       };
     });
-  }, [navigation, getListItems]);
+  }, [navigation, getListItems, listItems, checkListCleared]);
 
   return (
     <TopView>
       <ScrollView>
-        {listItems && <ListName>{listItems.listName}</ListName>}
-        {listItems && (
-          <FlatList
-            data={listItems.tasks}
-            renderItem={({item}) => <ListItem item={item} />}
-            keyExtractor={item => item.id}
-          />
+        {listCleared ? (
+          <Text style={{color: 'white'}}>List cleared</Text>
+        ) : (
+          listItems && (
+            <>
+              <ListName>{listItems.listName}</ListName>
+
+              <FlatList
+                data={listItems.tasks}
+                renderItem={({item}) => (
+                  <ListItem item={item} checkListCleared={checkListCleared} />
+                )}
+                keyExtractor={item => item.id}
+              />
+            </>
+          )
         )}
       </ScrollView>
     </TopView>

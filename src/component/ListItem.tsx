@@ -8,6 +8,7 @@ import styled from 'styled-components/native';
 import {pencil, playPause} from './Sound';
 import {Task} from '../../types/data';
 import {COMPLETE_COLOR, LIST_COLOR} from '../constants';
+import {useListContext} from '../context/ListContext';
 
 const DoneButton = styled.TouchableOpacity`
   background-color: #000;
@@ -97,8 +98,10 @@ const LeftContainer = styled.View`
 
 export default function ListItem({
   item: {id, title, details, status, whodunnit},
+  checkListCleared,
 }: {
   item: Task;
+  checkListCleared: unknown;
 }) {
   const [listItem, setListItem] = useState({
     id,
@@ -107,7 +110,7 @@ export default function ListItem({
     status,
     whodunnit,
   });
-
+  const {listItems} = useListContext();
   const titleRef = React.useRef(ListTitle.prototype);
   const detailsRef = React.useRef(ListDetails.prototype);
   const animatedValue = React.useRef(new Animated.Value(0)).current;
@@ -128,7 +131,7 @@ export default function ListItem({
     }).start(() => {
       Vibration.vibrate();
     });
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 400));
     const tempItem = {id, title, details, status, whodunnit};
     const modifyComplete =
       status === 'incomplete' ? (status = 'complete') : (status = 'incomplete');
@@ -169,6 +172,7 @@ export default function ListItem({
       setDetailsTextHeight(h);
       animateStrikeDetail();
     });
+    checkListCleared(listItems);
   };
 
   const {status: itemStatus} = listItem;

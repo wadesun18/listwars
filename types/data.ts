@@ -1,6 +1,11 @@
 export interface List {
   listName: string;
-  tasks: Array<{title: string; details: string; whodunnit: Array<string>}>;
+  tasks: Array<{
+    status: string;
+    title: string;
+    details: string;
+    whodunnit: string;
+  }>;
 }
 
 export interface Task {
