@@ -1,8 +1,10 @@
-import {FlatList, ScrollView} from 'react-native';
+import {useEffect} from 'react';
+import {Alert, FlatList, ScrollView} from 'react-native';
 import styled from 'styled-components/native';
 
 import ListItem from '../../component/ListItem';
 import {LIST_COLOR} from '../../constants';
+import {useListContext} from '../../context/ListContext';
 import {Data} from '../../data/MockData';
 
 const ListName = styled.Text`
@@ -18,16 +20,33 @@ const TopView = styled.SafeAreaView`
   flex: 1;
 `;
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}: any) {
+  const {listItems, getListItems, setListItems} = useListContext();
+
+  useEffect(() => {
+    getListItems();
+    // add listener to detect if user has navigated to IndexScreen
+    const listener = navigation.addListener('focus', () => {
+      getListItems();
+
+      // cleanup function to remove listener
+      return () => {
+        listener.remove();
+      };
+    });
+  }, [navigation, getListItems]);
+
   return (
     <TopView>
       <ScrollView>
-        <ListName>{Data.listName}</ListName>
-        <FlatList
-          data={Data.tasks}
-          renderItem={({item}) => <ListItem item={item} />}
-          keyExtractor={item => item.id}
-        />
+        {listItems && <ListName>{listItems.listName}</ListName>}
+        {listItems && (
+          <FlatList
+            data={listItems.tasks}
+            renderItem={({item}) => <ListItem item={item} />}
+            keyExtractor={item => item.id}
+          />
+        )}
       </ScrollView>
     </TopView>
   );
