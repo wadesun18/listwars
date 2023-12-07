@@ -6,7 +6,7 @@ export const Data = {
       title: 'Clean floors',
       details: 'Vacuum then wash floors',
       whodunnit: 'Maria',
-      status: 'complete',
+      status: 'incomplete',
     },
     {
       id: '2',

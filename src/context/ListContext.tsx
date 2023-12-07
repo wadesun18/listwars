@@ -9,7 +9,7 @@ import {
   useState,
 } from 'react';
 
-import {List} from '../../types/data';
+import {List, Task} from '../../types/data';
 import {Data} from '../data/MockData';
 
 export type ListContent = {
@@ -41,6 +41,7 @@ export type ListContent = {
   listCleared: boolean;
   setListCleared: Dispatch<SetStateAction<boolean>>;
   checkListCleared: (arr: List) => void;
+  listClickComplete: (i: string) => void;
 };
 
 export const MyListContext = createContext<ListContent>({
@@ -61,6 +62,7 @@ export const MyListContext = createContext<ListContent>({
   listCleared: false,
   setListCleared: () => {},
   checkListCleared: () => {},
+  listClickComplete: () => {},
 });
 
 export function MyListProvider({children}: {children: React.ReactNode}) {
@@ -69,10 +71,24 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
 
   const [errorMessage, setErrorMessage] = useState<unknown>(null);
 
+  const tempData = {...Data};
+
   const getListItems = useCallback(() => {
-    // fetch data
-    setListItems(Data);
+    setListItems(tempData);
   }, []);
+
+  const listClickComplete = useCallback(
+    async (i: string) => {
+      const modifiedData = {...tempData};
+      const index = modifiedData.tasks.findIndex((element: Task) => {
+        return element.id === i;
+      });
+      modifiedData.tasks[index].status = 'complete';
+      await new Promise(resolve => setTimeout(resolve, 400));
+      setListItems(modifiedData);
+    },
+    [getListItems],
+  );
 
   const checkListCleared = useCallback((arr: List | undefined) => {
     if (arr?.tasks.every(v => v.status === 'complete')) {
@@ -90,6 +106,7 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
       listCleared,
       setListCleared,
       checkListCleared,
+      listClickComplete,
     }),
     [
       listItems,
@@ -98,6 +115,7 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
       getListItems,
       listCleared,
       checkListCleared,
+      listClickComplete,
     ],
   );
 

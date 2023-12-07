@@ -28,7 +28,6 @@ export default function HomeScreen({navigation}: any) {
   useEffect(() => {
     getListItems();
     checkListCleared(listItems);
-    console.log('hmmmm', listItems, listCleared);
     // add listener to detect if user has navigated to IndexScreen
     const listener = navigation.addListener('focus', () => {
       getListItems();

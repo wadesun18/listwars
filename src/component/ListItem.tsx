@@ -98,7 +98,6 @@ const LeftContainer = styled.View`
 
 export default function ListItem({
   item: {id, title, details, status, whodunnit},
-  checkListCleared,
 }: {
   item: Task;
   checkListCleared: unknown;
@@ -110,7 +109,6 @@ export default function ListItem({
     status,
     whodunnit,
   });
-  const {listItems} = useListContext();
   const titleRef = React.useRef(ListTitle.prototype);
   const detailsRef = React.useRef(ListDetails.prototype);
   const animatedValue = React.useRef(new Animated.Value(0)).current;
@@ -119,6 +117,8 @@ export default function ListItem({
   const [titleTextHeight, setTitleTextHeight] = React.useState(0);
   const [detailsTextWidth, setDetailsTextWidth] = React.useState(0);
   const [detailsTextHeight, setDetailsTextHeight] = React.useState(0);
+
+  const {listClickComplete} = useListContext();
 
   pencil.setVolume(1);
 
@@ -172,7 +172,8 @@ export default function ListItem({
       setDetailsTextHeight(h);
       animateStrikeDetail();
     });
-    checkListCleared(listItems);
+    // set listitem here - import from user context
+    listClickComplete(id);
   };
 
   const {status: itemStatus} = listItem;
