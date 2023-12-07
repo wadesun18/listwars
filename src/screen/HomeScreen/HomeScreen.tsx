@@ -1,13 +1,5 @@
-import React, {useEffect, useRef} from 'react';
-import {
-  Animated,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated, FlatList, ScrollView, Text} from 'react-native';
 import styled from 'styled-components/native';
 
 import ListItem from '../../component/ListItem';
@@ -28,6 +20,8 @@ const TopView = styled.SafeAreaView`
 `;
 
 export default function HomeScreen({navigation}: any) {
+  const [listSuccess, setListSuccess] = useState(false);
+
   const {listItems, getListItems, checkListCleared, listCleared} =
     useListContext();
 
@@ -42,12 +36,14 @@ export default function HomeScreen({navigation}: any) {
       toValue: 1,
       duration: 1000,
       useNativeDriver: true,
-    }).start();
+    }).start(() => {
+      setListSuccess(true);
+    });
   };
 
   const yVal = listAnimatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -500],
+    outputRange: [0, -600],
   });
 
   const animStyle = {
@@ -78,16 +74,7 @@ export default function HomeScreen({navigation}: any) {
   return (
     <TopView>
       <ScrollView>
-        {/* {listCleared ? (
-          <View>
-            <TouchableOpacity onPress={moveList}>
-              <Animated.View style={[styles.ball, animStyle]}>
-                <Text style={{color: 'white'}}>List cleared</Text>
-              </Animated.View>
-            </TouchableOpacity>
-          </View>
-        ) : (*/}
-        {listItems && (
+        {listItems && !listSuccess && (
           <Animated.View style={[animStyle]}>
             <ListName>{listItems?.listName}</ListName>
 
@@ -100,29 +87,8 @@ export default function HomeScreen({navigation}: any) {
             />
           </Animated.View>
         )}
-        {/* )
-        {/* )} */}
+        {listSuccess && <Text style={{color: 'white'}}>Success!</Text>}
       </ScrollView>
     </TopView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  ball: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: 'red',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    fontWeight: 'bold',
-    color: 'white',
-    fontSize: 32,
-  },
-});
