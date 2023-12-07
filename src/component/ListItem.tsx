@@ -8,6 +8,7 @@ import styled from 'styled-components/native';
 import {pencil, playPause} from './Sound';
 import {Task} from '../../types/data';
 import {COMPLETE_COLOR, LIST_COLOR} from '../constants';
+import {useListContext} from '../context/ListContext';
 
 const DoneButton = styled.TouchableOpacity`
   background-color: #000;
@@ -34,15 +35,17 @@ const ListTitle = styled.Text<{status: string}>`
     props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
 `;
 
-// const ListTitleComplete = styled.Text<{status: string}>`
-//   font-family: Montserrat-Regular;
-//   font-size: 24px;
-//   font-weight: 800;
-//   margin-bottom: 2px;
-//   text-decoration: line-through;
-//   color: ${props =>
-//     props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
-// `;
+const ListTitleComplete = styled.Text<{status: string}>`
+  font-family: Montserrat-Regular;
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 2px;
+  text-decoration: line-through;
+  text-decoration-color: ${props =>
+    props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
+  color: ${props =>
+    props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
+`;
 
 ListTitle.defaultProps = {
   status: 'incomplete',
@@ -55,6 +58,20 @@ const ListDetails = styled.Text<{status: string}>`
   font-weight: 400;
   margin-bottom: 2px;
   color: #fff;
+`;
+
+const ListDetailsComplete = styled.Text<{status: string}>`
+  color: blue;
+  font-family: Montserrat-Regular;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 2px;
+  color: #fff;
+  text-decoration: line-through;
+  text-decoration-color: ${props =>
+    props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
+  color: ${props =>
+    props.status === 'complete' ? COMPLETE_COLOR : LIST_COLOR};
 `;
 
 ListDetails.defaultProps = {
@@ -79,12 +96,11 @@ const LeftContainer = styled.View`
   height: 50;
 `;
 
-// Sound.setCategory('Playback');
-
 export default function ListItem({
   item: {id, title, details, status, whodunnit},
 }: {
   item: Task;
+  checkListCleared: unknown;
 }) {
   const [listItem, setListItem] = useState({
     id,
@@ -93,7 +109,6 @@ export default function ListItem({
     status,
     whodunnit,
   });
-
   const titleRef = React.useRef(ListTitle.prototype);
   const detailsRef = React.useRef(ListDetails.prototype);
   const animatedValue = React.useRef(new Animated.Value(0)).current;
@@ -102,6 +117,8 @@ export default function ListItem({
   const [titleTextHeight, setTitleTextHeight] = React.useState(0);
   const [detailsTextWidth, setDetailsTextWidth] = React.useState(0);
   const [detailsTextHeight, setDetailsTextHeight] = React.useState(0);
+
+  const {listClickComplete} = useListContext();
 
   pencil.setVolume(1);
 
@@ -112,15 +129,14 @@ export default function ListItem({
       easing: Easing.linear,
       useNativeDriver: false,
     }).start(() => {
-      const tempItem = {id, title, details, status, whodunnit};
-      const modifyComplete =
-        status === 'incomplete'
-          ? (status = 'complete')
-          : (status = 'incomplete');
-      tempItem.status = modifyComplete;
-      setListItem(tempItem);
       Vibration.vibrate();
     });
+    await new Promise(resolve => setTimeout(resolve, 400));
+    const tempItem = {id, title, details, status, whodunnit};
+    const modifyComplete =
+      status === 'incomplete' ? (status = 'complete') : (status = 'incomplete');
+    tempItem.status = modifyComplete;
+    setListItem(tempItem);
   };
 
   const animateStrikeDetail = () => {
@@ -156,6 +172,8 @@ export default function ListItem({
       setDetailsTextHeight(h);
       animateStrikeDetail();
     });
+    // set listitem here - import from user context
+    listClickComplete(id);
   };
 
   const {status: itemStatus} = listItem;
@@ -163,23 +181,23 @@ export default function ListItem({
     <>
       <RowView>
         <TaskContainer>
-          {/* {itemStatus === 'complete' ? (
+          {itemStatus === 'complete' ? (
             <ListTitleComplete ref={titleRef} status={itemStatus}>
               {title}
             </ListTitleComplete>
           ) : (
-            <> */}
-          <ListTitle ref={titleRef} status={itemStatus}>
-            {title}
-          </ListTitle>
-          <Animated.View
-            style={[
-              styles.strike,
-              {width: titleStrikeWidth, top: titleTextHeight / 2 + 1},
-            ]}
-          />
-          {/* </>
-          )} */}
+            <>
+              <ListTitle ref={titleRef} status={itemStatus}>
+                {title}
+              </ListTitle>
+              <Animated.View
+                style={[
+                  styles.titleStrike,
+                  {width: titleStrikeWidth, top: titleTextHeight / 2 + 1},
+                ]}
+              />
+            </>
+          )}
         </TaskContainer>
         <LeftContainer>
           {itemStatus === 'incomplete' ? (
@@ -196,24 +214,37 @@ export default function ListItem({
         </LeftContainer>
       </RowView>
       <RowView>
-        <ListDetails ref={detailsRef} status={listItem.status}>
-          {details}
-        </ListDetails>
-        <Animated.View
-          style={[
-            styles.strike,
-            {width: detailsStrikeWidth, top: detailsTextHeight / 2 + 1},
-          ]}
-        />
+        {itemStatus === 'complete' ? (
+          <ListDetailsComplete ref={detailsRef} status={itemStatus}>
+            {details}
+          </ListDetailsComplete>
+        ) : (
+          <>
+            <ListDetails ref={detailsRef} status={listItem.status}>
+              {details}
+            </ListDetails>
+            <Animated.View
+              style={[
+                styles.detailsStrike,
+                {width: detailsStrikeWidth, top: detailsTextHeight / 2 + 1},
+              ]}
+            />
+          </>
+        )}
       </RowView>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  strike: {
+  titleStrike: {
     position: 'absolute',
-    height: 3,
-    backgroundColor: COMPLETE_COLOR,
+    height: 1,
+    backgroundColor: LIST_COLOR,
+  },
+  detailsStrike: {
+    position: 'absolute',
+    height: 1,
+    backgroundColor: '#fff',
   },
 });

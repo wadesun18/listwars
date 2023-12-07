@@ -20,7 +20,7 @@ export const Data = {
       title: 'Take out garbage',
       details: 'Get garbage bags',
       whodunnit: 'Rufus',
-      status: 'incomplete',
+      status: 'complete',
     },
     {
       id: '4',
