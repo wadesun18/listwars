@@ -122,6 +122,8 @@ export default function ListItem({
 
   pencil.setVolume(1);
 
+  // animate strikethrough on click complete
+
   const animateStrike = async () => {
     await Animated.timing(animatedValue, {
       toValue: 1,
