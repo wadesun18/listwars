@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, FlatList, ScrollView, Text} from 'react-native';
+import {Animated, FlatList, Image, ScrollView, Text} from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import styled from 'styled-components/native';
 
@@ -96,6 +96,7 @@ export default function HomeScreen({navigation}: any) {
           <TopView>
             <ScrollView>
               <Text style={{color: 'white'}}>Success!</Text>
+              <Image source={require('../../images/Trophy.png')} />
             </ScrollView>
           </TopView>
           <ConfettiCannon

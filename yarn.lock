@@ -1944,6 +1944,19 @@
   dependencies:
     "@babel/types" "^7.20.7"
 
+"@types/eslint@>=8.0.0":
+  "integrity" "sha512-4K8GavROwhrYl2QXDXm0Rv9epkA8GBFu0EI+XrrnnuCl7u8CWBRusX7fXJfanhZTDWSAL24gDI/UqXyUM0Injw=="
+  "resolved" "https://registry.npmjs.org/@types/eslint/-/eslint-8.44.8.tgz"
+  "version" "8.44.8"
+  dependencies:
+    "@types/estree" "*"
+    "@types/json-schema" "*"
+
+"@types/estree@*":
+  "integrity" "sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw=="
+  "resolved" "https://registry.npmjs.org/@types/estree/-/estree-1.0.5.tgz"
+  "version" "1.0.5"
+
 "@types/graceful-fs@^4.1.3":
   "integrity" "sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ=="
   "resolved" "https://registry.npmjs.org/@types/graceful-fs/-/graceful-fs-4.1.9.tgz"
@@ -1978,7 +1991,7 @@
     "expect" "^29.0.0"
     "pretty-format" "^29.0.0"
 
-"@types/json-schema@^7.0.12", "@types/json-schema@^7.0.9":
+"@types/json-schema@*", "@types/json-schema@^7.0.12", "@types/json-schema@^7.0.9":
   "integrity" "sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA=="
   "resolved" "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.15.tgz"
   "version" "7.0.15"
@@ -6161,10 +6174,10 @@
   "resolved" "https://registry.npmjs.org/react-native-sound/-/react-native-sound-0.11.2.tgz"
   "version" "0.11.2"
 
-"react-native-svg@^14.0.0", "react-native-svg@>= 11.x":
-  "integrity" "sha512-17W/gWXRUMS7p7PSHu/WyGkZUc1NzRTGxxXc0VqBLjzKSchyb0EmgsiWf9aKmfC6gmY0wcsmKZcGV41bCcNfBA=="
-  "resolved" "https://registry.npmjs.org/react-native-svg/-/react-native-svg-14.0.0.tgz"
-  "version" "14.0.0"
+"react-native-svg@>= 11.x":
+  "integrity" "sha512-HeseElmEk+AXGwFZl3h56s0LtYD9HyGdrpg8yd9QM26X+d7kjETrRQ9vCjtxuT5dCZEIQ5uggU1dQhzasnsCWA=="
+  "resolved" "https://registry.npmjs.org/react-native-svg/-/react-native-svg-14.1.0.tgz"
+  "version" "14.1.0"
   dependencies:
     "css-select" "^5.1.0"
     "css-tree" "^1.1.3"
