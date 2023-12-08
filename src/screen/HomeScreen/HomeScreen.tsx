@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, FlatList, Image, ScrollView} from 'react-native';
+import {Animated, FlatList, ScrollView} from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import styled from 'styled-components/native';
 
@@ -25,8 +25,6 @@ const SuccessView = styled.View`
   background-color: #000;
   flex: 1;
   align-items: center;
-  border-width: 3px;
-  border-color: white;
   justify-content: center;
 `;
 
@@ -37,13 +35,10 @@ const TopView = styled.SafeAreaView`
 
 export default function HomeScreen({navigation}: any) {
   const [listSuccess, setListSuccess] = useState(false);
+  const [renderTrophy, setRenderTrophy] = useState(false);
 
   const {listItems, getListItems, checkListCleared, listCleared} =
     useListContext();
-
-  // introduce a function to check whether all list items are cleared
-
-  // animate list clear when all items marked complete
 
   const listAnimatedValue = useRef(new Animated.Value(0)).current;
 
@@ -55,6 +50,7 @@ export default function HomeScreen({navigation}: any) {
     }).start(() => {
       setListSuccess(true);
       successPlayPause();
+      setRenderTrophy(true);
     });
   };
 
@@ -71,13 +67,35 @@ export default function HomeScreen({navigation}: any) {
     ],
   };
 
+  const trophyAnimatedValue = useRef(new Animated.Value(0.7)).current;
+
+  const animateTrophy = () => {
+    Animated.spring(trophyAnimatedValue, {
+      toValue: 1.2,
+      friction: 1,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const trophyAnimStyle = {
+    transform: [
+      {
+        scale: trophyAnimatedValue,
+      },
+    ],
+  };
+
   success.setVolume(1);
 
   useEffect(() => {
     getListItems();
     checkListCleared(listItems);
+
     if (listCleared) {
       moveList();
+    }
+    if (renderTrophy) {
+      animateTrophy();
     }
     // add listener to detect if user has navigated to IndexScreen
     const listener = navigation.addListener('focus', () => {
@@ -88,7 +106,7 @@ export default function HomeScreen({navigation}: any) {
         listener.remove();
       };
     });
-  }, [navigation, getListItems, listItems, checkListCleared]);
+  }, [navigation, getListItems, listItems, checkListCleared, renderTrophy]);
 
   return (
     <>
@@ -112,7 +130,10 @@ export default function HomeScreen({navigation}: any) {
       {listSuccess && (
         <>
           <SuccessView>
-            <Image source={require('../../images/Trophy.png')} />
+            <Animated.Image
+              style={[trophyAnimStyle]}
+              source={require('../../images/Trophy.png')}
+            />
             <SuccessText>Success!</SuccessText>
           </SuccessView>
           <ConfettiCannon
