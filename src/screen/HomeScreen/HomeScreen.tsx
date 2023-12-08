@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, FlatList, ScrollView} from 'react-native';
+import {Animated, FlatList, ScrollView, Vibration} from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import styled from 'styled-components/native';
 
@@ -96,6 +96,7 @@ export default function HomeScreen({navigation}: any) {
     }
     if (renderTrophy) {
       animateTrophy();
+      Vibration.vibrate();
     }
     // add listener to detect if user has navigated to IndexScreen
     const listener = navigation.addListener('focus', () => {
