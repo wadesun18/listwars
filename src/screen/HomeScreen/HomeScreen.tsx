@@ -15,6 +15,17 @@ const ListName = styled.Text`
   text-align: center;
 `;
 
+const SuccessText = styled.Text`
+  color: white;
+  text-align: center;
+`;
+
+const SuccessView = styled.View`
+  background-color: #000;
+  flex: 1;
+  align-items: center;
+`;
+
 const TopView = styled.SafeAreaView`
   background-color: #000;
   flex: 1;
@@ -93,12 +104,15 @@ export default function HomeScreen({navigation}: any) {
       )}
       {listSuccess && (
         <>
-          <TopView>
+          <SuccessView>
             <ScrollView>
-              <Text style={{color: 'white'}}>Success!</Text>
-              <Image source={require('../../images/Trophy.png')} />
+              <Image
+                style={{marginTop: 150}}
+                source={require('../../images/Trophy.png')}
+              />
+              <SuccessText>Success!</SuccessText>
             </ScrollView>
-          </TopView>
+          </SuccessView>
           <ConfettiCannon
             count={200}
             origin={{x: -10, y: -600}}
