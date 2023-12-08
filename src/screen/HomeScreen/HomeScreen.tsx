@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, FlatList, ScrollView, Text} from 'react-native';
+import ConfettiCannon from 'react-native-confetti-cannon';
 import styled from 'styled-components/native';
 
 import ListItem from '../../component/ListItem';
@@ -72,23 +73,34 @@ export default function HomeScreen({navigation}: any) {
   }, [navigation, getListItems, listItems, checkListCleared]);
 
   return (
-    <TopView>
-      <ScrollView>
-        {listItems && !listSuccess && (
-          <Animated.View style={[animStyle]}>
-            <ListName>{listItems?.listName}</ListName>
+    <>
+      <TopView>
+        <ScrollView>
+          {listItems && !listSuccess && (
+            <Animated.View style={[animStyle]}>
+              <ListName>{listItems?.listName}</ListName>
 
-            <FlatList
-              data={listItems?.tasks}
-              renderItem={({item}) => (
-                <ListItem item={item} checkListCleared={checkListCleared} />
-              )}
-              keyExtractor={item => item.id}
-            />
-          </Animated.View>
-        )}
-        {listSuccess && <Text style={{color: 'white'}}>Success!</Text>}
-      </ScrollView>
-    </TopView>
+              <FlatList
+                data={listItems?.tasks}
+                renderItem={({item}) => (
+                  <ListItem item={item} checkListCleared={checkListCleared} />
+                )}
+                keyExtractor={item => item.id}
+              />
+            </Animated.View>
+          )}
+        </ScrollView>
+      </TopView>
+      {listSuccess && (
+        <>
+          <ConfettiCannon
+            count={200}
+            origin={{x: -10, y: -600}}
+            fadeOut={true}
+          />
+          {/* <Text style={{color: 'white'}}>Success!</Text> */}
+        </>
+      )}
+    </>
   );
 }
