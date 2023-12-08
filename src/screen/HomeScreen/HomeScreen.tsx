@@ -1,9 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, FlatList, Image, ScrollView, Text} from 'react-native';
+import {Animated, FlatList, Image, ScrollView} from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import styled from 'styled-components/native';
 
 import ListItem from '../../component/ListItem';
+import {success, successPlayPause} from '../../component/Sound';
 import {LIST_COLOR} from '../../constants';
 import {useListContext} from '../../context/ListContext';
 
@@ -24,6 +25,9 @@ const SuccessView = styled.View`
   background-color: #000;
   flex: 1;
   align-items: center;
+  border-width: 3px;
+  border-color: white;
+  justify-content: center;
 `;
 
 const TopView = styled.SafeAreaView`
@@ -50,6 +54,7 @@ export default function HomeScreen({navigation}: any) {
       useNativeDriver: true,
     }).start(() => {
       setListSuccess(true);
+      successPlayPause();
     });
   };
 
@@ -65,6 +70,8 @@ export default function HomeScreen({navigation}: any) {
       },
     ],
   };
+
+  success.setVolume(1);
 
   useEffect(() => {
     getListItems();
@@ -105,13 +112,8 @@ export default function HomeScreen({navigation}: any) {
       {listSuccess && (
         <>
           <SuccessView>
-            <ScrollView>
-              <Image
-                style={{marginTop: 150}}
-                source={require('../../images/Trophy.png')}
-              />
-              <SuccessText>Success!</SuccessText>
-            </ScrollView>
+            <Image source={require('../../images/Trophy.png')} />
+            <SuccessText>Success!</SuccessText>
           </SuccessView>
           <ConfettiCannon
             count={200}
