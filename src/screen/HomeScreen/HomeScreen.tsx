@@ -74,9 +74,9 @@ export default function HomeScreen({navigation}: any) {
 
   return (
     <>
-      <TopView>
-        <ScrollView>
-          {listItems && !listSuccess && (
+      {listItems && !listSuccess && (
+        <TopView>
+          <ScrollView>
             <Animated.View style={[animStyle]}>
               <ListName>{listItems?.listName}</ListName>
 
@@ -88,17 +88,21 @@ export default function HomeScreen({navigation}: any) {
                 keyExtractor={item => item.id}
               />
             </Animated.View>
-          )}
-        </ScrollView>
-      </TopView>
+          </ScrollView>
+        </TopView>
+      )}
       {listSuccess && (
         <>
+          <TopView>
+            <ScrollView>
+              <Text style={{color: 'white'}}>Success!</Text>
+            </ScrollView>
+          </TopView>
           <ConfettiCannon
             count={200}
             origin={{x: -10, y: -600}}
             fadeOut={true}
           />
-          {/* <Text style={{color: 'white'}}>Success!</Text> */}
         </>
       )}
     </>
