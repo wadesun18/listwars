@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, FlatList, ScrollView, Vibration} from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
+import Shimmer from 'react-native-shimmer';
 import styled from 'styled-components/native';
 
 import ListItem from '../../component/ListItem';
@@ -135,7 +136,9 @@ export default function HomeScreen({navigation}: any) {
               style={[trophyAnimStyle]}
               source={require('../../images/Trophy.png')}
             />
-            <SuccessText>Success!</SuccessText>
+            <Shimmer>
+              <SuccessText>Success!</SuccessText>
+            </Shimmer>
           </SuccessView>
           <ConfettiCannon
             count={200}
