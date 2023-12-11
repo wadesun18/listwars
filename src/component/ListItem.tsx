@@ -5,7 +5,7 @@ import React from 'react';
 import {Animated, Easing, StyleSheet, Vibration} from 'react-native';
 import styled from 'styled-components/native';
 
-import {pencil, playPause} from './Sound';
+import {pencil, pencilPlayPause} from './Sound';
 import {Task} from '../../types/data';
 import {COMPLETE_COLOR, LIST_COLOR} from '../constants';
 import {useListContext} from '../context/ListContext';
@@ -122,6 +122,8 @@ export default function ListItem({
 
   pencil.setVolume(1);
 
+  // animate strikethrough on click complete
+
   const animateStrike = async () => {
     await Animated.timing(animatedValue, {
       toValue: 1,
@@ -161,7 +163,7 @@ export default function ListItem({
   });
 
   const clickComplete = () => {
-    playPause();
+    pencilPlayPause();
     titleRef.current.measure((x, y, w, h) => {
       setTitleTextWidth(w);
       setTitleTextHeight(h);
