@@ -108,17 +108,23 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
         {},
       );
 
-      const winner = Object.keys(playerScores).reduce((a, b) =>
-        playerScores[a] > playerScores[b]
-          ? a
-          : playerScores[b] > playerScores[a]
-            ? b
-            : 'Tie!',
+      const max = Object.keys(playerScores).reduce(
+        (a, v) => Math.max(a, playerScores[v]),
+        -Infinity,
+      );
+      const winner = Object.keys(playerScores).filter(
+        v => playerScores[v] === max,
       );
 
-      winner === 'Tie!'
-        ? (winnerAnnouncement = "It's a tie! Good job to all the competitors")
-        : (winnerAnnouncement = `${winner} wins! Way to go!`);
+      console.log('winner', winner);
+      console.log('length', winner.length);
+
+      if (winner.length > 1) {
+        winnerAnnouncement = "It's a tie! Good job to all the competitors";
+      } else if (winner.length === 1) {
+        winnerAnnouncement = `${winner} wins! Way to go!`;
+      }
+
       return winnerAnnouncement;
     }
   }, []);
