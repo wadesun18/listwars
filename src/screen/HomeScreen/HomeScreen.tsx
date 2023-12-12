@@ -38,7 +38,7 @@ export default function HomeScreen({navigation}: any) {
   const [listSuccess, setListSuccess] = useState(false);
   const [renderTrophy, setRenderTrophy] = useState(false);
 
-  const {listItems, getListItems, checkListCleared, listCleared} =
+  const {listItems, getListItems, checkListCleared, listCleared, listWinner} =
     useListContext();
 
   const listAnimatedValue = useRef(new Animated.Value(0)).current;
@@ -88,12 +88,15 @@ export default function HomeScreen({navigation}: any) {
 
   success.setVolume(1);
 
+  const winnerMessage = listWinner(listItems);
+
   useEffect(() => {
     getListItems();
     checkListCleared(listItems);
 
     if (listCleared) {
       moveList();
+      listWinner(listItems);
     }
     if (renderTrophy) {
       animateTrophy();
@@ -137,7 +140,7 @@ export default function HomeScreen({navigation}: any) {
               source={require('../../images/Trophy.png')}
             />
             <Shimmer>
-              <SuccessText>Success!</SuccessText>
+              <SuccessText>{winnerMessage}</SuccessText>
             </Shimmer>
           </SuccessView>
           <ConfettiCannon
