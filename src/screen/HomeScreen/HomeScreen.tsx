@@ -19,7 +19,9 @@ const ListName = styled.Text`
 
 const SuccessText = styled.Text`
   color: white;
+  font-family: Montserrat-SemiBold;
   text-align: center;
+  font-size: 24px;
 `;
 
 const SuccessView = styled.View`
@@ -84,6 +86,7 @@ export default function HomeScreen({navigation}: any) {
         scale: trophyAnimatedValue,
       },
     ],
+    marginBottom: 20,
   };
 
   success.setVolume(1);

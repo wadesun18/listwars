@@ -12,7 +12,7 @@ export const Data = {
       id: '2',
       title: 'Wash dishes',
       details: 'Half wash pot and pan',
-      whodunnit: 'Maria',
+      whodunnit: 'Rufus',
       status: 'incomplete',
     },
     {
