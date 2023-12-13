@@ -6,6 +6,7 @@ import {
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ColorSchemeName} from 'react-native';
 
+import CreateScreen from '../screen/CreateScreen/CreateScreen';
 import HomeScreen from '../screen/HomeScreen/HomeScreen';
 import LaunchScreen from '../screen/Onboarding/LaunchScreen';
 
@@ -25,6 +26,7 @@ export default function Navigation({
 export type RootStackParamList = {
   Onboarding: undefined;
   Home: undefined;
+  Create: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -35,6 +37,11 @@ function RootNavigator() {
       <Stack.Screen
         name="Home"
         component={HomeScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Create"
+        component={CreateScreen}
         options={{headerShown: false}}
       />
       <Stack.Screen

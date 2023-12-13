@@ -4,6 +4,7 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 import Shimmer from 'react-native-shimmer';
 import styled from 'styled-components/native';
 
+import AnimatedView from '../../component/AnimatedView';
 import ListItem from '../../component/ListItem';
 import {success, successPlayPause} from '../../component/Sound';
 import {LIST_COLOR} from '../../constants';
@@ -58,7 +59,6 @@ const TopView = styled.SafeAreaView`
 export default function HomeScreen({navigation}: any) {
   const [listSuccess, setListSuccess] = useState(false);
   const [renderTrophy, setRenderTrophy] = useState(false);
-  const [highlighted, setHighlighted] = useState(false);
 
   const {listItems, getListItems, checkListCleared, listCleared, listWinner} =
     useListContext();
@@ -113,6 +113,10 @@ export default function HomeScreen({navigation}: any) {
 
   const winnerMessage = listWinner(listItems);
 
+  const onPress = () => {
+    navigation.push('Create');
+  };
+
   useEffect(() => {
     getListItems();
     checkListCleared(listItems);
@@ -165,9 +169,11 @@ export default function HomeScreen({navigation}: any) {
             <Shimmer>
               <SuccessText>{winnerMessage}</SuccessText>
             </Shimmer>
-            <Button>
-              <ButtonText>Continue</ButtonText>
-            </Button>
+            <AnimatedView>
+              <Button onPress={onPress}>
+                <ButtonText>Continue</ButtonText>
+              </Button>
+            </AnimatedView>
           </SuccessView>
           <ConfettiCannon
             count={200}
