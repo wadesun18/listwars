@@ -42,6 +42,7 @@ export type ListContent = {
   setListCleared: Dispatch<SetStateAction<boolean>>;
   checkListCleared: (arr: List) => void;
   listClickComplete: (i: string) => void;
+  listWinner: (arr: List) => void;
 };
 
 export const MyListContext = createContext<ListContent>({
@@ -63,6 +64,7 @@ export const MyListContext = createContext<ListContent>({
   setListCleared: () => {},
   checkListCleared: () => {},
   listClickComplete: () => {},
+  listWinner: () => {},
 });
 
 export function MyListProvider({children}: {children: React.ReactNode}) {
@@ -96,6 +98,37 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
     }
   }, []);
 
+  const listWinner = useCallback((arr: List | undefined) => {
+    let winnerAnnouncement = '';
+
+    if (arr) {
+      const playerScores = arr?.tasks.reduce(
+        (a, {whodunnit}) =>
+          Object.assign(a, {[whodunnit]: (a[whodunnit] || 0) + 1}),
+        {},
+      );
+
+      const max = Object.keys(playerScores).reduce(
+        (a, v) => Math.max(a, playerScores[v]),
+        -Infinity,
+      );
+      const winner = Object.keys(playerScores).filter(
+        v => playerScores[v] === max,
+      );
+
+      console.log('winner', winner);
+      console.log('length', winner.length);
+
+      if (winner.length > 1) {
+        winnerAnnouncement = "It's a tie! Good job to all the competitors";
+      } else if (winner.length === 1) {
+        winnerAnnouncement = `${winner} wins! Way to go!`;
+      }
+
+      return winnerAnnouncement;
+    }
+  }, []);
+
   const state = useMemo(
     () => ({
       listItems,
@@ -107,6 +140,7 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
       setListCleared,
       checkListCleared,
       listClickComplete,
+      listWinner,
     }),
     [
       listItems,
@@ -116,6 +150,7 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
       listCleared,
       checkListCleared,
       listClickComplete,
+      listWinner,
     ],
   );
 
