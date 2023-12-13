@@ -116,9 +116,6 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
         v => playerScores[v] === max,
       );
 
-      console.log('winner', winner);
-      console.log('length', winner.length);
-
       if (winner.length > 1) {
         winnerAnnouncement = "It's a tie! Good job to all the competitors";
       } else if (winner.length === 1) {

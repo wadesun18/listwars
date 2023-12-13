@@ -4,10 +4,30 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 import Shimmer from 'react-native-shimmer';
 import styled from 'styled-components/native';
 
+import AnimatedView from '../../component/AnimatedView';
 import ListItem from '../../component/ListItem';
 import {success, successPlayPause} from '../../component/Sound';
 import {LIST_COLOR} from '../../constants';
 import {useListContext} from '../../context/ListContext';
+
+const Button = styled.TouchableOpacity`
+  background: white;
+  border-radius: 10px;
+  color: white;
+  display: inline-block;
+  margin-top: 30px;
+  opacity: 0.8;
+`;
+
+const ButtonText = styled.Text`
+  color: black;
+  font-family: 'Montserrat_Regular';
+  font-size: 24px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 10px;
+  text-align: center;
+`;
 
 const ListName = styled.Text`
   color: ${LIST_COLOR};
@@ -93,6 +113,10 @@ export default function HomeScreen({navigation}: any) {
 
   const winnerMessage = listWinner(listItems);
 
+  const onPress = () => {
+    navigation.push('Create');
+  };
+
   useEffect(() => {
     getListItems();
     checkListCleared(listItems);
@@ -145,6 +169,11 @@ export default function HomeScreen({navigation}: any) {
             <Shimmer>
               <SuccessText>{winnerMessage}</SuccessText>
             </Shimmer>
+            <AnimatedView>
+              <Button onPress={onPress}>
+                <ButtonText>Continue</ButtonText>
+              </Button>
+            </AnimatedView>
           </SuccessView>
           <ConfettiCannon
             count={200}
