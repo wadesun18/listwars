@@ -9,6 +9,25 @@ import {success, successPlayPause} from '../../component/Sound';
 import {LIST_COLOR} from '../../constants';
 import {useListContext} from '../../context/ListContext';
 
+const Button = styled.TouchableOpacity`
+  background: white;
+  border-radius: 10px;
+  color: white;
+  display: inline-block;
+  margin-top: 30px;
+  opacity: 0.8;
+`;
+
+const ButtonText = styled.Text`
+  color: black;
+  font-family: 'Montserrat_Regular';
+  font-size: 24px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 10px;
+  text-align: center;
+`;
+
 const ListName = styled.Text`
   color: ${LIST_COLOR};
   font-family: Montserrat-SemiBold;
@@ -39,6 +58,7 @@ const TopView = styled.SafeAreaView`
 export default function HomeScreen({navigation}: any) {
   const [listSuccess, setListSuccess] = useState(false);
   const [renderTrophy, setRenderTrophy] = useState(false);
+  const [highlighted, setHighlighted] = useState(false);
 
   const {listItems, getListItems, checkListCleared, listCleared, listWinner} =
     useListContext();
@@ -145,6 +165,9 @@ export default function HomeScreen({navigation}: any) {
             <Shimmer>
               <SuccessText>{winnerMessage}</SuccessText>
             </Shimmer>
+            <Button>
+              <ButtonText>Continue</ButtonText>
+            </Button>
           </SuccessView>
           <ConfettiCannon
             count={200}
