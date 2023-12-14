@@ -123,6 +123,7 @@ const CreateScreen = ({navigation}: NativeStackHeaderProps) => {
 const styles = StyleSheet.create({
   input: {
     flex: 1,
+    fontFamily: 'Montserrat-Regular',
     height: 40,
     borderWidth: 1,
     padding: 10,
