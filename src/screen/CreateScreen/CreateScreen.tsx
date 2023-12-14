@@ -1,10 +1,9 @@
-import {faPlus} from '@fortawesome/free-solid-svg-icons/faPlus';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {ScrollView, StyleSheet, TextInput} from 'react-native';
 import styled from 'styled-components/native';
 
+import CreateItem from '../../component/CreatItem';
 import {LIST_COLOR} from '../../constants';
 
 // import {useListContext} from '../../context/ListContext';
@@ -30,15 +29,6 @@ const CreateSubheader = styled.Text`
   text-align: center;
 `;
 
-const AddButton = styled.TouchableOpacity`
-  background-color: #000;
-  height: 50px;
-  width: 50px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-`;
-
 const ItemView = styled.View`
   display: flex;
   flex-direction: row;
@@ -47,19 +37,10 @@ const ItemView = styled.View`
   margin-top: 20px;
 `;
 
-const ItemText = styled.Text`
-  font-family: Montserrat-Regular;
-  font-size: 18px;
-  font-weight: 500;
-  margin-bottom: 2px;
-  color: ${LIST_COLOR};
-`;
-
 const CreateScreen = ({navigation}: NativeStackHeaderProps) => {
   // const {} = useListContext();
 
   const [title, onChangeTitle] = React.useState('Example title text');
-  const [text, onChangeText] = React.useState('Example text');
 
   return (
     <CreateView>
@@ -78,43 +59,7 @@ const CreateScreen = ({navigation}: NativeStackHeaderProps) => {
         <ItemView style={{marginTop: 40}}>
           <CreateSubheader>Tasks</CreateSubheader>
         </ItemView>
-        <ItemView>
-          <ItemText>Task Name</ItemText>
-        </ItemView>
-        <ItemView>
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeText}
-            value={text}
-          />
-        </ItemView>
-        <ItemView>
-          <ItemText>Task Description</ItemText>
-        </ItemView>
-        <ItemView>
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeText}
-            value={text}
-          />
-        </ItemView>
-        <ItemView>
-          <ItemText>Assignee</ItemText>
-        </ItemView>
-        <ItemView>
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeText}
-            value={text}
-          />
-        </ItemView>
-        <AddButton>
-          <FontAwesomeIcon
-            icon={faPlus}
-            style={{color: LIST_COLOR}}
-            size={26}
-          />
-        </AddButton>
+        <CreateItem />
       </ScrollView>
     </CreateView>
   );
