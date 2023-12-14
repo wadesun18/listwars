@@ -1,10 +1,13 @@
 import {faPlus} from '@fortawesome/free-solid-svg-icons/faPlus';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import React from 'react';
-import {StyleSheet, TextInput} from 'react-native';
+import {FlatList, Task} from 'react-native';
 import styled from 'styled-components/native';
 
+import UserInput from './UserInput';
+import {List} from '../../types/data';
 import {LIST_COLOR} from '../constants';
+import {useListContext} from '../context/ListContext';
 
 const AddButton = styled.TouchableOpacity`
   background-color: #000;
@@ -32,7 +35,16 @@ const ItemView = styled.View`
 `;
 
 export default function CreateItem() {
-  const [text, onChangeText] = React.useState('Example text');
+  // need to have a default new list retrieved from user context
+  // below component should be a flatlist that renders each task
+
+  const {newListItems, getNewListItems} = useListContext();
+
+  // then need to call a function from context to add a new task
+  // when user clicks the add button
+
+  // user inputs data, and on submit call function from user context
+  // to store the data so it can render the list
 
   return (
     <>
@@ -40,31 +52,19 @@ export default function CreateItem() {
         <ItemText>Task Name</ItemText>
       </ItemView>
       <ItemView>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeText}
-          value={text}
-        />
+        <UserInput />
       </ItemView>
       <ItemView>
         <ItemText>Task Description</ItemText>
       </ItemView>
       <ItemView>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeText}
-          value={text}
-        />
+        <UserInput />
       </ItemView>
       <ItemView>
         <ItemText>Assignee</ItemText>
       </ItemView>
       <ItemView>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeText}
-          value={text}
-        />
+        <UserInput />
       </ItemView>
       <AddButton>
         <FontAwesomeIcon icon={faPlus} style={{color: LIST_COLOR}} size={26} />
@@ -72,14 +72,3 @@ export default function CreateItem() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    flex: 1,
-    fontFamily: 'Montserrat-Regular',
-    height: 40,
-    borderWidth: 1,
-    padding: 10,
-    backgroundColor: 'white',
-  },
-});

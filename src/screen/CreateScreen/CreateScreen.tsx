@@ -1,10 +1,11 @@
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
-import React from 'react';
-import {ScrollView, StyleSheet, TextInput} from 'react-native';
+import React, {useEffect} from 'react';
+import {FlatList, ScrollView, StyleSheet, TextInput} from 'react-native';
 import styled from 'styled-components/native';
 
-import CreateItem from '../../component/CreatItem';
+import CreateItem from '../../component/CreateItem';
 import {LIST_COLOR} from '../../constants';
+import {useListContext} from '../../context/ListContext';
 
 // import {useListContext} from '../../context/ListContext';
 
@@ -38,9 +39,27 @@ const ItemView = styled.View`
 `;
 
 const CreateScreen = ({navigation}: NativeStackHeaderProps) => {
-  // const {} = useListContext();
+  const {getNewListItems, newListItems} = useListContext();
 
   const [title, onChangeTitle] = React.useState('Example title text');
+
+  useEffect(() => {
+    getNewListItems();
+    console.log('datatat', newListItems);
+  }, []);
+
+  const defaultData = {
+    listName: '',
+    tasks: [
+      {
+        id: '1',
+        title: '',
+        details: '',
+        whodunnit: '',
+        status: 'incomplete',
+      },
+    ],
+  };
 
   return (
     <CreateView>
@@ -59,7 +78,11 @@ const CreateScreen = ({navigation}: NativeStackHeaderProps) => {
         <ItemView style={{marginTop: 40}}>
           <CreateSubheader>Tasks</CreateSubheader>
         </ItemView>
-        <CreateItem />
+        <FlatList
+          data={defaultData.tasks}
+          keyExtractor={item => item.id}
+          renderItem={() => <CreateItem />}
+        />
       </ScrollView>
     </CreateView>
   );

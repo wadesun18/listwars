@@ -10,10 +10,23 @@ import {
 } from 'react';
 
 import {List, Task} from '../../types/data';
+import {DefaultList} from '../data/DefaultList';
 import {Data} from '../data/MockData';
 
 export type ListContent = {
   listItems:
+    | {
+        listName: string;
+        tasks: Array<{
+          id: string;
+          title: string;
+          details: string;
+          whodunnit: string;
+          status: string;
+        }>;
+      }
+    | undefined;
+  newListItems:
     | {
         listName: string;
         tasks: Array<{
@@ -37,12 +50,25 @@ export type ListContent = {
       }[];
     }>
   >;
+  setNewListItems: Dispatch<
+    SetStateAction<{
+      listName: string;
+      tasks: {
+        id: string;
+        title: string;
+        details: string;
+        whodunnit: string;
+        status: string;
+      }[];
+    }>
+  >;
   getListItems: () => void;
   listCleared: boolean;
   setListCleared: Dispatch<SetStateAction<boolean>>;
   checkListCleared: (arr: List) => void;
   listClickComplete: (i: string) => void;
   listWinner: (arr: List) => void;
+  getNewListItems: () => void;
 };
 
 export const MyListContext = createContext<ListContent>({
@@ -58,17 +84,33 @@ export const MyListContext = createContext<ListContent>({
       },
     ],
   },
+  newListItems: {
+    listName: 'none',
+    tasks: [
+      {
+        id: '0',
+        title: 'none',
+        details: 'none',
+        whodunnit: 'none',
+        status: 'incomplete',
+      },
+    ],
+  },
   setListItems: () => {},
+  setNewListItems: () => {},
   getListItems: () => {},
   listCleared: false,
   setListCleared: () => {},
   checkListCleared: () => {},
   listClickComplete: () => {},
   listWinner: () => {},
+  getNewListItems: () => {},
 });
 
 export function MyListProvider({children}: {children: React.ReactNode}) {
   const [listItems, setListItems] = useState<ListContent['listItems']>();
+  const [newlistItems, setNewListItems] =
+    useState<ListContent['newListItems']>();
   const [listCleared, setListCleared] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState<unknown>(null);
@@ -77,6 +119,11 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
 
   const getListItems = useCallback(() => {
     setListItems(tempData);
+  }, []);
+
+  const getNewListItems = useCallback(() => {
+    const tempList = {...DefaultList};
+    setNewListItems(tempList);
   }, []);
 
   const listClickComplete = useCallback(
@@ -138,6 +185,9 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
       checkListCleared,
       listClickComplete,
       listWinner,
+      getNewListItems,
+      newlistItems,
+      setNewListItems,
     }),
     [
       listItems,
@@ -148,6 +198,8 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
       checkListCleared,
       listClickComplete,
       listWinner,
+      getNewListItems,
+      newlistItems,
     ],
   );
 
