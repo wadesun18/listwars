@@ -7,8 +7,6 @@ import CreateItem from '../../component/CreateItem';
 import {LIST_COLOR} from '../../constants';
 import {useListContext} from '../../context/ListContext';
 
-// import {useListContext} from '../../context/ListContext';
-
 const CreateView = styled.SafeAreaView`
   background-color: #000;
   flex: 1;
@@ -39,28 +37,19 @@ const ItemView = styled.View`
 `;
 
 const CreateScreen = ({navigation}: NativeStackHeaderProps) => {
-  const {getNewListItems, newListItems} = useListContext();
+  const {getNewListItems, listItems, newListItems, setNewListItems} =
+    useListContext();
 
   const [title, onChangeTitle] = React.useState('Example title text');
 
-  useEffect(() => {
-    getNewListItems();
-    console.log('datatat', newListItems);
-  }, []);
+  // useEffect(() => {
+  //   getNewListItems();
+  // }, [getNewListItems, navigation]);
 
-  const defaultData = {
-    listName: '',
-    tasks: [
-      {
-        id: '1',
-        title: '',
-        details: '',
-        whodunnit: '',
-        status: 'incomplete',
-      },
-    ],
-  };
+  console.log('pika', listItems);
+  console.log('chu', newListItems);
 
+  if (!newListItems) return null;
   return (
     <CreateView>
       <ScrollView>
@@ -79,7 +68,7 @@ const CreateScreen = ({navigation}: NativeStackHeaderProps) => {
           <CreateSubheader>Tasks</CreateSubheader>
         </ItemView>
         <FlatList
-          data={defaultData.tasks}
+          data={newListItems.tasks}
           keyExtractor={item => item.id}
           renderItem={() => <CreateItem />}
         />

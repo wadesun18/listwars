@@ -6,7 +6,7 @@ export const DefaultList = {
       title: '',
       details: '',
       whodunnit: '',
-      status: 'incomplete',
+      status: '',
     },
   ],
 };

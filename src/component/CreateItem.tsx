@@ -1,13 +1,10 @@
 import {faPlus} from '@fortawesome/free-solid-svg-icons/faPlus';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import React from 'react';
-import {FlatList, Task} from 'react-native';
 import styled from 'styled-components/native';
 
 import UserInput from './UserInput';
-import {List} from '../../types/data';
 import {LIST_COLOR} from '../constants';
-import {useListContext} from '../context/ListContext';
 
 const AddButton = styled.TouchableOpacity`
   background-color: #000;
@@ -37,8 +34,6 @@ const ItemView = styled.View`
 export default function CreateItem() {
   // need to have a default new list retrieved from user context
   // below component should be a flatlist that renders each task
-
-  const {newListItems, getNewListItems} = useListContext();
 
   // then need to call a function from context to add a new task
   // when user clicks the add button
