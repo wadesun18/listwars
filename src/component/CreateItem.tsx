@@ -1,19 +1,8 @@
-import {faPlus} from '@fortawesome/free-solid-svg-icons/faPlus';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import React from 'react';
 import styled from 'styled-components/native';
 
 import UserInput from './UserInput';
 import {LIST_COLOR} from '../constants';
-
-const AddButton = styled.TouchableOpacity`
-  background-color: #000;
-  height: 50px;
-  width: 50px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-`;
 
 const ItemText = styled.Text`
   font-family: Montserrat-Regular;
@@ -61,9 +50,6 @@ export default function CreateItem() {
       <ItemView>
         <UserInput />
       </ItemView>
-      <AddButton>
-        <FontAwesomeIcon icon={faPlus} style={{color: LIST_COLOR}} size={26} />
-      </AddButton>
     </>
   );
 }

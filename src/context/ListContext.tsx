@@ -64,6 +64,7 @@ export type ListContent = {
   >;
   getListItems: () => void;
   getNewListItems: () => void;
+  addNewListItem: () => void;
   listCleared: boolean;
   setListCleared: Dispatch<SetStateAction<boolean>>;
   checkListCleared: (arr: List) => void;
@@ -100,6 +101,7 @@ export const MyListContext = createContext<ListContent>({
   setNewListItems: () => {},
   getListItems: () => {},
   getNewListItems: () => {},
+  addNewListItem: () => {},
   listCleared: false,
   setListCleared: () => {},
   checkListCleared: () => {},
@@ -124,6 +126,20 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
 
   const getNewListItems = useCallback(() => {
     setNewListItems(DefaultList);
+  }, []);
+
+  const addNewListItem = useCallback(() => {
+    const newList = {...DefaultList};
+    const newId = newList.tasks.length + 1;
+    const newItem = {
+      id: `${newId}`,
+      title: '',
+      details: '',
+      whodunnit: '',
+      status: '',
+    };
+    newList.tasks.push(newItem);
+    setNewListItems(newList);
   }, []);
 
   const listClickComplete = useCallback(
@@ -188,6 +204,7 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
       getNewListItems,
       newListItems,
       setNewListItems,
+      addNewListItem,
     }),
     [
       listItems,
@@ -201,6 +218,7 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
       getNewListItems,
       newListItems,
       setNewListItems,
+      addNewListItem,
     ],
   );
 

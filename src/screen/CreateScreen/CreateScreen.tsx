@@ -1,3 +1,5 @@
+import {faPlus} from '@fortawesome/free-solid-svg-icons/faPlus';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import React, {useEffect} from 'react';
 import {FlatList, ScrollView, StyleSheet, TextInput} from 'react-native';
@@ -6,6 +8,15 @@ import styled from 'styled-components/native';
 import CreateItem from '../../component/CreateItem';
 import {LIST_COLOR} from '../../constants';
 import {useListContext} from '../../context/ListContext';
+
+const AddButton = styled.TouchableOpacity`
+  background-color: #000;
+  height: 50px;
+  width: 50px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+`;
 
 const CreateView = styled.SafeAreaView`
   background-color: #000;
@@ -37,14 +48,10 @@ const ItemView = styled.View`
 `;
 
 const CreateScreen = ({navigation}: NativeStackHeaderProps) => {
-  const {getNewListItems, listItems, newListItems, setNewListItems} =
+  const {addNewListItem, listItems, newListItems, setNewListItems} =
     useListContext();
 
   const [title, onChangeTitle] = React.useState('Example title text');
-
-  // useEffect(() => {
-  //   getNewListItems();
-  // }, [getNewListItems, navigation]);
 
   console.log('pika', listItems);
   console.log('chu', newListItems);
@@ -72,6 +79,13 @@ const CreateScreen = ({navigation}: NativeStackHeaderProps) => {
           keyExtractor={item => item.id}
           renderItem={() => <CreateItem />}
         />
+        <AddButton onPress={addNewListItem}>
+          <FontAwesomeIcon
+            icon={faPlus}
+            style={{color: LIST_COLOR}}
+            size={26}
+          />
+        </AddButton>
       </ScrollView>
     </CreateView>
   );
