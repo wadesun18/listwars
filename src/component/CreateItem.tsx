@@ -20,20 +20,15 @@ const ItemView = styled.View`
   margin-top: 20px;
 `;
 
-export default function CreateItem() {
-  // need to have a default new list retrieved from user context
-  // below component should be a flatlist that renders each task
+export default function CreateItem({index}: {index: number}) {
+  // need to pass in the index value and put the task number in the header
 
-  // then need to call a function from context to add a new task
-  // when user clicks the add button
-
-  // user inputs data, and on submit call function from user context
-  // to store the data so it can render the list
+  console.log('indexlala', index);
 
   return (
     <>
       <ItemView>
-        <ItemText>Task Name</ItemText>
+        <ItemText>Task #{index + 1}</ItemText>
       </ItemView>
       <ItemView>
         <UserInput />

@@ -77,7 +77,7 @@ const CreateScreen = ({navigation}: NativeStackHeaderProps) => {
         <FlatList
           data={newListItems.tasks}
           keyExtractor={item => item.id}
-          renderItem={() => <CreateItem />}
+          renderItem={({index}) => <CreateItem index={index} />}
         />
         <AddButton onPress={addNewListItem}>
           <FontAwesomeIcon
