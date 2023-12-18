@@ -1,8 +1,19 @@
+import {faTrash} from '@fortawesome/free-solid-svg-icons/faTrash';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import React from 'react';
 import styled from 'styled-components/native';
 
 import UserInput from './UserInput';
 import {LIST_COLOR} from '../constants';
+
+const DeleteButton = styled.TouchableOpacity`
+  background-color: #303030;
+  height: 40px;
+  width: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+`;
 
 const ItemText = styled.Text`
   font-family: Montserrat-Regular;
@@ -10,6 +21,17 @@ const ItemText = styled.Text`
   font-weight: 500;
   margin-bottom: 2px;
   color: ${LIST_COLOR};
+`;
+
+const ItemHeaderView = styled.View`
+  align-items: center;
+  background-color: '#303030';
+  display: flex;
+  flex-direction: row;
+  height: 42px;
+  justify-content: space-between;
+  margin-top: 50px;
+  margin-bottom: 30px;
 `;
 
 const ItemView = styled.View`
@@ -23,10 +45,16 @@ const ItemView = styled.View`
 export default function CreateItem({index}: {index: number}) {
   return (
     <>
-      <ItemView
-        style={{backgroundColor: '#303030', marginTop: 50, marginBottom: 30}}>
+      <ItemHeaderView>
         <ItemText style={{fontSize: 20}}>Task #{index + 1}</ItemText>
-      </ItemView>
+        <DeleteButton>
+          <FontAwesomeIcon
+            icon={faTrash}
+            style={{color: LIST_COLOR}}
+            size={20}
+          />
+        </DeleteButton>
+      </ItemHeaderView>
       <ItemView>
         <ItemText>Task Name</ItemText>
       </ItemView>

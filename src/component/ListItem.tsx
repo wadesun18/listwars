@@ -92,8 +92,8 @@ const TaskContainer = styled.View`
 
 const LeftContainer = styled.View`
   justify-content: center;
-  width: 50;
-  height: 50;
+  width: 50px;
+  height: 50px;
 `;
 
 export default function ListItem({

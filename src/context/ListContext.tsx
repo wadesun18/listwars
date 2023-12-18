@@ -65,6 +65,7 @@ export type ListContent = {
   getListItems: () => void;
   getNewListItems: () => void;
   addNewListItem: () => void;
+  deleteListItem: () => void;
   listCleared: boolean;
   setListCleared: Dispatch<SetStateAction<boolean>>;
   checkListCleared: (arr: List) => void;
@@ -102,6 +103,7 @@ export const MyListContext = createContext<ListContent>({
   getListItems: () => {},
   getNewListItems: () => {},
   addNewListItem: () => {},
+  deleteListItem: () => {},
   listCleared: false,
   setListCleared: () => {},
   checkListCleared: () => {},
@@ -122,8 +124,6 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
     setListItems(tempData);
   }, []);
 
-  const tempList = {...DefaultList};
-
   const getNewListItems = useCallback(() => {
     setNewListItems(DefaultList);
   }, []);
@@ -139,6 +139,15 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
       status: '',
     };
     newList.tasks.push(newItem);
+    setNewListItems(newList);
+  }, []);
+
+  const deleteListItem = useCallback((index: number) => {
+    const newList = {...DefaultList};
+    // need to use splice based on index
+    if (index > -1) {
+      newList.tasks.splice(index, 1);
+    }
     setNewListItems(newList);
   }, []);
 
@@ -205,6 +214,7 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
       newListItems,
       setNewListItems,
       addNewListItem,
+      deleteListItem,
     }),
     [
       listItems,
@@ -219,6 +229,7 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
       newListItems,
       setNewListItems,
       addNewListItem,
+      deleteListItem,
     ],
   );
 
