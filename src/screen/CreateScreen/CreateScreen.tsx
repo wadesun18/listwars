@@ -18,6 +18,26 @@ const AddButton = styled.TouchableOpacity`
   border-radius: 6px;
 `;
 
+const Button = styled.TouchableOpacity`
+  background: white;
+  border-radius: 10px;
+  color: white;
+  display: inline-block;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  opacity: 0.8;
+`;
+
+const ButtonText = styled.Text`
+  color: black;
+  font-family: 'Montserrat_Regular';
+  font-size: 24px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 10px;
+  text-align: center;
+`;
+
 const CreateView = styled.SafeAreaView`
   background-color: #000;
   flex: 1;
@@ -35,7 +55,6 @@ const CreateSubheader = styled.Text`
   color: ${LIST_COLOR};
   font-family: Montserrat-SemiBold;
   font-size: 22px;
-  margin-bottom: 20px;
   text-align: center;
 `;
 
@@ -88,6 +107,9 @@ const CreateScreen = ({navigation}: NativeStackHeaderProps) => {
             size={26}
           />
         </AddButton>
+        <Button>
+          <ButtonText>Submit Form</ButtonText>
+        </Button>
       </ScrollView>
     </CreateView>
   );

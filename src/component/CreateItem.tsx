@@ -15,16 +15,20 @@ const ItemText = styled.Text`
 const ItemView = styled.View`
   display: flex;
   flex-direction: row;
+  height: 42px;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
 `;
 
 export default function CreateItem({index}: {index: number}) {
   return (
     <>
+      <ItemView
+        style={{backgroundColor: '#303030', marginTop: 50, marginBottom: 30}}>
+        <ItemText style={{fontSize: 20}}>Task #{index + 1}</ItemText>
+      </ItemView>
       <ItemView>
-        <ItemText>Task #{index + 1}</ItemText>
+        <ItemText>Task Name</ItemText>
       </ItemView>
       <ItemView>
         <UserInput />
