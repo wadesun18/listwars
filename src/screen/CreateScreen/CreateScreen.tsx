@@ -56,11 +56,13 @@ const CreateScreen = ({navigation}: NativeStackHeaderProps) => {
   console.log('pika', listItems);
   console.log('chu', newListItems);
 
+  // Create New List title should be in fixed location
+
   if (!newListItems) return null;
   return (
     <CreateView>
+      <CreateHeader>Create New List</CreateHeader>
       <ScrollView>
-        <CreateHeader>Create New List</CreateHeader>
         <ItemView>
           <CreateSubheader>List Title</CreateSubheader>
         </ItemView>

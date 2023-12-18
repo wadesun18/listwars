@@ -21,10 +21,6 @@ const ItemView = styled.View`
 `;
 
 export default function CreateItem({index}: {index: number}) {
-  // need to pass in the index value and put the task number in the header
-
-  console.log('indexlala', index);
-
   return (
     <>
       <ItemView>

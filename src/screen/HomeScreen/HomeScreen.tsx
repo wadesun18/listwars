@@ -144,10 +144,9 @@ export default function HomeScreen({navigation}: any) {
     <>
       {listItems && !listSuccess && (
         <TopView>
-          <ScrollView>
-            <Animated.View style={[animStyle]}>
-              <ListName>{listItems?.listName}</ListName>
-
+          <Animated.View style={[animStyle]}>
+            <ListName>{listItems?.listName}</ListName>
+            <ScrollView>
               <FlatList
                 data={listItems?.tasks}
                 renderItem={({item}) => (
@@ -155,8 +154,8 @@ export default function HomeScreen({navigation}: any) {
                 )}
                 keyExtractor={item => item.id}
               />
-            </Animated.View>
-          </ScrollView>
+            </ScrollView>
+          </Animated.View>
         </TopView>
       )}
       {listSuccess && (
