@@ -1,6 +1,7 @@
 export interface List {
   listName: string;
   tasks: Array<{
+    id: string;
     status: string;
     title: string;
     details: string;

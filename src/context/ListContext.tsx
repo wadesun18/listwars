@@ -10,10 +10,23 @@ import {
 } from 'react';
 
 import {List, Task} from '../../types/data';
+import {DefaultList} from '../data/DefaultList';
 import {Data} from '../data/MockData';
 
 export type ListContent = {
   listItems:
+    | {
+        listName: string;
+        tasks: Array<{
+          id: string;
+          title: string;
+          details: string;
+          whodunnit: string;
+          status: string;
+        }>;
+      }
+    | undefined;
+  newListItems:
     | {
         listName: string;
         tasks: Array<{
@@ -37,7 +50,21 @@ export type ListContent = {
       }[];
     }>
   >;
+  setNewListItems: Dispatch<
+    SetStateAction<{
+      listName: string;
+      tasks: {
+        id: string;
+        title: string;
+        details: string;
+        whodunnit: string;
+        status: string;
+      }[];
+    }>
+  >;
   getListItems: () => void;
+  getNewListItems: () => void;
+  addNewListItem: () => void;
   listCleared: boolean;
   setListCleared: Dispatch<SetStateAction<boolean>>;
   checkListCleared: (arr: List) => void;
@@ -50,7 +77,7 @@ export const MyListContext = createContext<ListContent>({
     listName: 'none',
     tasks: [
       {
-        id: '0',
+        id: '1',
         title: 'none',
         details: 'none',
         whodunnit: 'none',
@@ -58,8 +85,23 @@ export const MyListContext = createContext<ListContent>({
       },
     ],
   },
+  newListItems: {
+    listName: '',
+    tasks: [
+      {
+        id: '1',
+        title: '',
+        details: '',
+        whodunnit: '',
+        status: 'incomplete',
+      },
+    ],
+  },
   setListItems: () => {},
+  setNewListItems: () => {},
   getListItems: () => {},
+  getNewListItems: () => {},
+  addNewListItem: () => {},
   listCleared: false,
   setListCleared: () => {},
   checkListCleared: () => {},
@@ -69,14 +111,35 @@ export const MyListContext = createContext<ListContent>({
 
 export function MyListProvider({children}: {children: React.ReactNode}) {
   const [listItems, setListItems] = useState<ListContent['listItems']>();
+  const [newListItems, setNewListItems] =
+    useState<ListContent['newListItems']>(DefaultList);
   const [listCleared, setListCleared] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState<unknown>(null);
-
   const tempData = {...Data};
 
   const getListItems = useCallback(() => {
     setListItems(tempData);
+  }, []);
+
+  const tempList = {...DefaultList};
+
+  const getNewListItems = useCallback(() => {
+    setNewListItems(DefaultList);
+  }, []);
+
+  const addNewListItem = useCallback(() => {
+    const newList = {...DefaultList};
+    const newId = newList.tasks.length + 1;
+    const newItem = {
+      id: `${newId}`,
+      title: '',
+      details: '',
+      whodunnit: '',
+      status: '',
+    };
+    newList.tasks.push(newItem);
+    setNewListItems(newList);
   }, []);
 
   const listClickComplete = useCallback(
@@ -138,6 +201,10 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
       checkListCleared,
       listClickComplete,
       listWinner,
+      getNewListItems,
+      newListItems,
+      setNewListItems,
+      addNewListItem,
     }),
     [
       listItems,
@@ -148,6 +215,10 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
       checkListCleared,
       listClickComplete,
       listWinner,
+      getNewListItems,
+      newListItems,
+      setNewListItems,
+      addNewListItem,
     ],
   );
 
