@@ -65,7 +65,7 @@ export type ListContent = {
   getListItems: () => void;
   getNewListItems: () => void;
   addNewListItem: () => void;
-  deleteListItem: () => void;
+  deleteListItem: (index: number) => void;
   listCleared: boolean;
   setListCleared: Dispatch<SetStateAction<boolean>>;
   checkListCleared: (arr: List) => void;
@@ -130,7 +130,7 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
 
   const addNewListItem = useCallback(() => {
     const newList = {...DefaultList};
-    const newId = newList.tasks.length + 1;
+    const newId = Number(newList.tasks[newList.tasks.length - 1].id) + 1;
     const newItem = {
       id: `${newId}`,
       title: '',
@@ -142,13 +142,20 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
     setNewListItems(newList);
   }, []);
 
-  const deleteListItem = useCallback((index: number) => {
-    const newList = {...DefaultList};
-    // need to use splice based on index
-    if (index > -1) {
-      newList.tasks.splice(index, 1);
+  const deleteListItem = useCallback((id: string) => {
+    const newList = {...newListItems};
+
+    const index = newList.tasks?.findIndex(x => Number(x.id) === Number(id));
+    // need to use splice based on id, id must be unique
+    console.log('pikapika', id);
+    console.log('chuchu', index);
+    console.log('pikachu', newList.tasks);
+    if (Number(id) > -1 && index) {
+      newList.tasks?.splice(index, 1);
     }
-    setNewListItems(newList);
+    if (newListItems) {
+      setNewListItems(newList);
+    }
   }, []);
 
   const listClickComplete = useCallback(

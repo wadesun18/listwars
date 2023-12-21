@@ -5,6 +5,7 @@ import styled from 'styled-components/native';
 
 import UserInput from './UserInput';
 import {LIST_COLOR} from '../constants';
+import {useListContext} from '../context/ListContext';
 
 const DeleteButton = styled.TouchableOpacity`
   background-color: #303030;
@@ -42,12 +43,19 @@ const ItemView = styled.View`
   align-items: center;
 `;
 
-export default function CreateItem({index}: {index: number}) {
+export default function CreateItem({index, id}: {index: number; id: string}) {
+  const {deleteListItem} = useListContext();
+
   return (
     <>
       <ItemHeaderView>
-        <ItemText style={{fontSize: 20}}>Task #{index + 1}</ItemText>
-        <DeleteButton>
+        <ItemText style={{fontSize: 20}}>
+          Task #{index + 1} ID #{id}
+        </ItemText>
+        <DeleteButton
+          onPress={() => {
+            deleteListItem(Number(id));
+          }}>
           <FontAwesomeIcon
             icon={faTrash}
             style={{color: LIST_COLOR}}
