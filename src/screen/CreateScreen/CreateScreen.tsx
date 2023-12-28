@@ -71,8 +71,6 @@ const CreateScreen = ({navigation}: NativeStackHeaderProps) => {
 
   const [title, onChangeTitle] = React.useState('Example title text');
 
-  // Create New List title should be in fixed location
-
   if (!newListItems) return null;
   return (
     <CreateView>

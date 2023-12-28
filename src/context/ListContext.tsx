@@ -146,10 +146,7 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
     const newList = {...newListItems};
 
     const index = newList.tasks?.findIndex(x => Number(x.id) === Number(id));
-    // need to use splice based on id, id must be unique
-    console.log('pikapika', id);
-    console.log('chuchu', index);
-    console.log('pikachu', newList.tasks);
+
     if (Number(id) > -1 && index) {
       newList.tasks?.splice(index, 1);
     }
