@@ -1,7 +1,7 @@
 import {faPlus} from '@fortawesome/free-solid-svg-icons/faPlus';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {FlatList, ScrollView, StyleSheet, TextInput} from 'react-native';
 import styled from 'styled-components/native';
 
@@ -67,15 +67,9 @@ const ItemView = styled.View`
 `;
 
 const CreateScreen = ({navigation}: NativeStackHeaderProps) => {
-  const {addNewListItem, listItems, newListItems, setNewListItems} =
-    useListContext();
+  const {addNewListItem, newListItems} = useListContext();
 
   const [title, onChangeTitle] = React.useState('Example title text');
-
-  console.log('pika', listItems);
-  console.log('chu', newListItems);
-
-  // Create New List title should be in fixed location
 
   if (!newListItems) return null;
   return (
@@ -98,7 +92,9 @@ const CreateScreen = ({navigation}: NativeStackHeaderProps) => {
         <FlatList
           data={newListItems.tasks}
           keyExtractor={item => item.id}
-          renderItem={({index}) => <CreateItem index={index} />}
+          renderItem={({index, item}) => (
+            <CreateItem index={index} id={item.id} />
+          )}
         />
         <AddButton onPress={addNewListItem}>
           <FontAwesomeIcon

@@ -65,6 +65,7 @@ export type ListContent = {
   getListItems: () => void;
   getNewListItems: () => void;
   addNewListItem: () => void;
+  deleteListItem: (index: number) => void;
   listCleared: boolean;
   setListCleared: Dispatch<SetStateAction<boolean>>;
   checkListCleared: (arr: List) => void;
@@ -102,6 +103,7 @@ export const MyListContext = createContext<ListContent>({
   getListItems: () => {},
   getNewListItems: () => {},
   addNewListItem: () => {},
+  deleteListItem: () => {},
   listCleared: false,
   setListCleared: () => {},
   checkListCleared: () => {},
@@ -122,15 +124,13 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
     setListItems(tempData);
   }, []);
 
-  const tempList = {...DefaultList};
-
   const getNewListItems = useCallback(() => {
     setNewListItems(DefaultList);
   }, []);
 
   const addNewListItem = useCallback(() => {
     const newList = {...DefaultList};
-    const newId = newList.tasks.length + 1;
+    const newId = Number(newList.tasks[newList.tasks.length - 1].id) + 1;
     const newItem = {
       id: `${newId}`,
       title: '',
@@ -140,6 +140,19 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
     };
     newList.tasks.push(newItem);
     setNewListItems(newList);
+  }, []);
+
+  const deleteListItem = useCallback((id: string) => {
+    const newList = {...newListItems};
+
+    const index = newList.tasks?.findIndex(x => Number(x.id) === Number(id));
+
+    if (Number(id) > -1 && index) {
+      newList.tasks?.splice(index, 1);
+    }
+    if (newListItems) {
+      setNewListItems(newList);
+    }
   }, []);
 
   const listClickComplete = useCallback(
@@ -205,6 +218,7 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
       newListItems,
       setNewListItems,
       addNewListItem,
+      deleteListItem,
     }),
     [
       listItems,
@@ -219,6 +233,7 @@ export function MyListProvider({children}: {children: React.ReactNode}) {
       newListItems,
       setNewListItems,
       addNewListItem,
+      deleteListItem,
     ],
   );
 
