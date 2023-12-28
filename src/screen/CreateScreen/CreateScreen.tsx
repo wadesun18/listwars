@@ -66,7 +66,7 @@ const ItemView = styled.View`
   margin-top: 20px;
 `;
 
-// only show trash icon when there is more than one list item
+// should only show trash icon when there is more than one list item
 
 const CreateScreen = ({navigation}: NativeStackHeaderProps) => {
   const {addNewListItem, newListItems} = useListContext();
