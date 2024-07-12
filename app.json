@@ -1,4 +1,7 @@
 {
   "name": "listwars",
-  "displayName": "listwars"
+  "displayName": "listwars",
+  "react-native-google-mobile-ads": {
+    "ios_app_id": ""
+  }
 }
