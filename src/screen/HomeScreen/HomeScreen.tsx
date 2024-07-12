@@ -1,14 +1,18 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Animated, FlatList, ScrollView, Vibration} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, FlatList, ScrollView, Vibration } from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import Shimmer from 'react-native-shimmer';
 import styled from 'styled-components/native';
 
 import AnimatedView from '../../component/AnimatedView';
 import ListItem from '../../component/ListItem';
-import {success, successPlayPause} from '../../component/Sound';
-import {LIST_COLOR} from '../../constants';
-import {useListContext} from '../../context/ListContext';
+import { success, successPlayPause } from '../../component/Sound';
+import { LIST_COLOR } from '../../constants';
+import { useListContext } from '../../context/ListContext';
+import { Platform } from 'react-native';
+import { BannerAd, BannerAdSize, TestIds, useForeground } from 'react-native-google-mobile-ads';
+
+const adUnitId = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
 
 const Button = styled.TouchableOpacity`
   background: white;
@@ -35,6 +39,7 @@ const ListName = styled.Text`
   font-size: 25px;
   margin-bottom: 20px;
   text-align: center;
+  font-weight: 800;
 `;
 
 const SuccessText = styled.Text`
@@ -56,11 +61,13 @@ const TopView = styled.SafeAreaView`
   flex: 1;
 `;
 
-export default function HomeScreen({navigation}: any) {
+export default function HomeScreen({ navigation }: any) {
+  const bannerRef = useRef<BannerAd>(null);
+
   const [listSuccess, setListSuccess] = useState(false);
   const [renderTrophy, setRenderTrophy] = useState(false);
 
-  const {listItems, getListItems, checkListCleared, listCleared, listWinner} =
+  const { listItems, getListItems, checkListCleared, listCleared, listWinner } =
     useListContext();
 
   const listAnimatedValue = useRef(new Animated.Value(0)).current;
@@ -91,6 +98,11 @@ export default function HomeScreen({navigation}: any) {
   };
 
   const trophyAnimatedValue = useRef(new Animated.Value(0.7)).current;
+
+  useForeground(() => {
+    Platform.OS === 'ios' && bannerRef.current?.load();
+  })
+
 
   const animateTrophy = () => {
     Animated.spring(trophyAnimatedValue, {
@@ -149,7 +161,7 @@ export default function HomeScreen({navigation}: any) {
             <ScrollView>
               <FlatList
                 data={listItems?.tasks}
-                renderItem={({item}) => (
+                renderItem={({ item }) => (
                   <ListItem item={item} checkListCleared={checkListCleared} />
                 )}
                 keyExtractor={item => item.id}
@@ -176,11 +188,12 @@ export default function HomeScreen({navigation}: any) {
           </SuccessView>
           <ConfettiCannon
             count={200}
-            origin={{x: -10, y: -600}}
+            origin={{ x: -10, y: -600 }}
             fadeOut={true}
           />
         </>
       )}
+      <BannerAd ref={bannerRef} unitId={adUnitId} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
     </>
   );
 }
