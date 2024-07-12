@@ -1,7 +1,6 @@
 import {faArrowCircleRight} from '@fortawesome/free-solid-svg-icons/faArrowCircleRight';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
 import styled from 'styled-components/native';
 
 import {LIST_COLOR} from '../../constants';
@@ -19,7 +18,6 @@ const Button = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 70%;
 `;
 
 const ButtonText = styled.Text`
@@ -46,41 +44,49 @@ const SubView = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 70%;
+  height: 30%;
 `;
 
 const StartScreen = ({navigation}) => {
   const [code, setCode] = React.useState('');
+  const [name, setName] = React.useState('');
   const handleJoin = () => {
     // Logic to join the list using the code
     console.log('Join list with code:', code);
+    if (!name) {
+      alert('Please enter a name');
+      return;
+    }
+    navigation.navigate('Create');
   };
 
   return (
     <TopView>
-      <Button onPress={() => navigation.navigate('Create')}>
-        <ButtonText>Create a New List</ButtonText>
-        <FontAwesomeIcon
-          icon={faArrowCircleRight}
-          style={{color: LIST_COLOR}}
-          size={32}
-        />
-      </Button>
-
-      <ButtonText>Join an Existing List</ButtonText>
       <SubView>
+        <ButtonText>Your Name</ButtonText>
+        <TextInput
+          placeholder="codename"
+          value={name}
+          onChangeText={setName}
+          placeholderTextColor="#000"
+        />
+      </SubView>
+      <SubView>
+        <ButtonText>Join a List</ButtonText>
         <TextInput
           placeholder="Enter list code"
           value={code}
           onChangeText={setCode}
           placeholderTextColor="#000"
         />
+      </SubView>
+      <Button onPress={handleJoin}>
         <FontAwesomeIcon
           icon={faArrowCircleRight}
           style={{color: LIST_COLOR}}
-          size={32}
+          size={50}
         />
-      </SubView>
+      </Button>
     </TopView>
   );
 };
