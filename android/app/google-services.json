@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "788979696902",
+    "project_id": "list-wars-5dafc",
+    "storage_bucket": "list-wars-5dafc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:788979696902:android:796cc742a3c12e98e50a87",
+        "android_client_info": {
+          "package_name": "com.listwars"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1yyIbqto4OMjFsBLYUvDR_wnsBp8oLsc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
